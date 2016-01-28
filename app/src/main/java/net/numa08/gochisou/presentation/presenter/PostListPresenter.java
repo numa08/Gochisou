@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import net.numa08.gochisou.domain.model.Post;
 import net.numa08.gochisou.domain.usecase.LoadPostUseCase;
 import net.numa08.gochisou.presentation.PostListView;
+import net.numa08.gochisou.presentation.internal.di.PerActivity;
 
 import java.util.List;
 
@@ -13,13 +14,14 @@ import javax.inject.Inject;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class TweetListPresenter implements Presenter{
+@PerActivity
+public class PostListPresenter implements Presenter {
 
     private final LoadPostUseCase useCase;
     private PostListView postListView;
 
     @Inject
-    public TweetListPresenter(LoadPostUseCase useCase) {
+    public PostListPresenter(LoadPostUseCase useCase) {
         this.useCase = useCase;
     }
 

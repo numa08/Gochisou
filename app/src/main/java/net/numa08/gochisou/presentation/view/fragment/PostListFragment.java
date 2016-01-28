@@ -7,29 +7,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.numa08.gochisou.domain.model.Post;
-import net.numa08.gochisou.domain.usecase.LoadPostUseCase;
 import net.numa08.gochisou.presentation.PostListView;
-import net.numa08.gochisou.presentation.presenter.TweetListPresenter;
-import net.numa08.gochisou.presentation.service.EsaAccessService;
-import net.numa08.gochisou.presentation.service.EsaAccessService_;
+import net.numa08.gochisou.presentation.presenter.PostListPresenter;
 
 import org.androidannotations.annotations.EFragment;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.inject.Inject;
 
-import io.realm.Realm;
 import io.realm.RealmBaseAdapter;
-import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 @EFragment
 public class PostListFragment extends ListFragment implements PostListView {
 
     @Inject
-    TweetListPresenter tweetListPresenter;
+    PostListPresenter postListPresenter;
 
     RealmBaseAdapter<Post> adapter;
 
@@ -37,14 +31,13 @@ public class PostListFragment extends ListFragment implements PostListView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // inject
-        EsaAccessService_.intent(getContext()).loadPost();
+//        EsaAccessService_.intent(getContext()).loadPost();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        tweetListPresenter.setView(this);
-        EsaAccessService_.intent(getContext()).loadPost();
+        postListPresenter.setView(this);
     }
 
     @Override
@@ -55,12 +48,12 @@ public class PostListFragment extends ListFragment implements PostListView {
     @Override
     public void onResume() {
         super.onResume();
-        tweetListPresenter.resume();
+        postListPresenter.resume();
     }
 
     @Override
     public void onPause() {
-        tweetListPresenter.pause();
+        postListPresenter.pause();
         super.onPause();
     }
 

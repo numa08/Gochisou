@@ -9,12 +9,12 @@ import javax.inject.Inject;
 
 import rx.Observable;
 
-public class SvaePostUserCaseImpl implements SavePostUseCase {
+public class SavePostUserCaseImpl implements SavePostUseCase {
 
     private final EsaRepository esaRepository;
 
     @Inject
-    public SvaePostUserCaseImpl(EsaRepository esaRepository) {
+    public SavePostUserCaseImpl(EsaRepository esaRepository) {
         this.esaRepository = esaRepository;
     }
 
