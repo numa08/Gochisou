@@ -3,24 +3,24 @@ package net.numa08.gochisou.presentation.presenter;
 import android.support.annotation.NonNull;
 
 import net.numa08.gochisou.domain.model.Post;
+import net.numa08.gochisou.domain.usecase.LoadPostUseCase;
 import net.numa08.gochisou.presentation.PostListView;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import io.realm.RealmQuery;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class TweetListPresenter implements Presenter{
 
-    private final RealmConfiguration realmConfiguration;
+    private final LoadPostUseCase useCase;
     private PostListView postListView;
-    private Realm realm;
 
     @Inject
-    public TweetListPresenter(RealmConfiguration realmConfiguration) {
-        this.realmConfiguration = realmConfiguration;
-        realm = Realm.getInstance(realmConfiguration);
+    public TweetListPresenter(LoadPostUseCase useCase) {
+        this.useCase = useCase;
     }
 
     public void setView(@NonNull PostListView view) {
@@ -29,14 +29,26 @@ public class TweetListPresenter implements Presenter{
 
     @Override
     public void resume() {
+        useCase.loadPost()
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Post>>() {
+                    @Override
+                    public void onCompleted() {}
+
+                    @Override
+                    public void onError(Throwable e) {}
+
+                    @Override
+                    public void onNext(List<Post> posts) {
+                        if (postListView != null) {
+                            postListView.renderPostList(posts);
+                        }
+                    }
+                });
     }
 
     @Override
     public void pause() {
-        realm.close();
-    }
 
-    public RealmQuery<Post> loadPost() {
-        return realm.where(Post.class);
     }
 }

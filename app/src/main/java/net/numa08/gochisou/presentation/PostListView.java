@@ -2,10 +2,12 @@ package net.numa08.gochisou.presentation;
 
 import net.numa08.gochisou.domain.model.Post;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface PostListView {
 
-    void showPost(List<Post> posts);
+    void renderPostList(Collection<Post> posts);
+
+    void showPost(Post post);
 
 }
