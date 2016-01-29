@@ -28,7 +28,7 @@ android {
 def retrofitVersion ="2.0.0-beta3"
 def daggerVersion = '2.0'
 def AAVersion = '3.3.2'
-def realmVersion = "0.87.2"
+def realmVersion = "0.87.4"
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
