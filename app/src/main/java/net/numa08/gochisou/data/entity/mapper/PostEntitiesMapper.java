@@ -1,4 +1,4 @@
-package net.numa08.gochisou.entity.mapper;
+package net.numa08.gochisou.data.entity.mapper;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -24,7 +24,6 @@ import io.realm.RealmString;
 public class PostEntitiesMapper {
 
     final Type realmStringToken = new TypeToken<RealmList<RealmString>>(){}.getType();
-    final Type dateToken = new TypeToken<Date>(){}.getType();
 
     final Gson gson = new GsonBuilder()
             .setExclusionStrategies(new ExclusionStrategy() {

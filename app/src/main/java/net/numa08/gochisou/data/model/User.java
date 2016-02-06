@@ -1,4 +1,4 @@
-package net.numa08.gochisou.domain.model;
+package net.numa08.gochisou.data.model;
 
 import com.google.gson.annotations.SerializedName;
 

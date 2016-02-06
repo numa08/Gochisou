@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Gochisou</string>
+    <string name="login_button">login</string>
+    <string name="hint_token">Token</string>
+    <string name="button_get_token">Get your token</string>
+    <string name="message_invalid_token">ログインできませんでした。\nトークンを再確認してください。</string>
 </resources>

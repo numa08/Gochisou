@@ -1,6 +1,6 @@
 package net.numa08.gochisou.presentation;
 
-import net.numa08.gochisou.domain.model.Post;
+import net.numa08.gochisou.data.model.Post;
 
 import java.util.Collection;
 

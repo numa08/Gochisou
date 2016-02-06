@@ -4,10 +4,13 @@ import android.content.Context;
 
 import net.numa08.gochisou.GochisouApplication;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
 @Module
+@Singleton
 public class ApplicationModule {
 
     private final GochisouApplication application;
