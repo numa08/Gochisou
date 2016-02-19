@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'android-apt'
 
@@ -24,6 +25,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 }
 def retrofitVersion ="2.0.0-beta3"
 def daggerVersion = '2.0'
@@ -42,17 +46,32 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
     compile "com.google.dagger:dagger:${daggerVersion}"
-    apt "com.google.dagger:dagger-compiler:${daggerVersion}"
+    kapt "com.google.dagger:dagger-compiler:${daggerVersion}"
     provided "javax.annotation:javax.annotation-api:1.2"
     compile 'com.squareup.picasso:picasso:2.5.2'
-    apt "org.androidannotations:androidannotations:$AAVersion"
+    kapt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
     compile "io.realm:realm-android-library:${realmVersion}@aar"
     compile "io.realm:realm-annotations:${realmVersion}"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
-apt {
+kapt {
+    generateStubs = true
     arguments {
-        androidManifestFile variant.outputs[0]?.processResources?.manifestFile
+        arg("androidManifestFile", variant.outputs[0].processResourcesTask.manifestFile)
     }
+}
+
+buildscript {
+    ext.kotlin_version = '1.0.0'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+repositories {
+    mavenCentral()
 }
