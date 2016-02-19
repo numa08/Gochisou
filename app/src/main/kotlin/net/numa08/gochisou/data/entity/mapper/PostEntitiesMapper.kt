@@ -1,24 +1,14 @@
 package net.numa08.gochisou.data.entity.mapper
 
-import com.google.gson.ExclusionStrategy
-import com.google.gson.FieldAttributes
-import com.google.gson.FieldNamingPolicy
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.TypeAdapter
+import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
-
-import java.io.IOException
-import java.lang.reflect.Type
-import java.util.Date
-
-import javax.inject.Singleton
-
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmString
+import java.io.IOException
+import javax.inject.Singleton
 
 @Singleton
 class PostEntitiesMapper {

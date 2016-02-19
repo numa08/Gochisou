@@ -33,6 +33,7 @@ def retrofitVersion ="2.0.0-beta3"
 def daggerVersion = '2.0'
 def AAVersion = '3.3.2'
 def realmVersion = "0.87.4"
+def rxLifecycleVersion = "0.4.0"
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -54,11 +55,14 @@ dependencies {
     compile "io.realm:realm-android-library:${realmVersion}@aar"
     compile "io.realm:realm-annotations:${realmVersion}"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "com.trello:rxlifecycle:$rxLifecycleVersion"
+    compile "com.trello:rxlifecycle-components:$rxLifecycleVersion"
 }
 
 kapt {
     generateStubs = true
     arguments {
+        //noinspection GroovyAssignabilityCheck
         arg("androidManifestFile", variant.outputs[0].processResourcesTask.manifestFile)
     }
 }
