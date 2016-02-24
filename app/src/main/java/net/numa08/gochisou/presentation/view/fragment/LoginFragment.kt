@@ -2,8 +2,11 @@ package net.numa08.gochisou.presentation.view.fragment
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.jakewharton.rxbinding.view.clicks
 import com.trello.rxlifecycle.components.support.RxFragment
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -16,8 +19,10 @@ import net.numa08.gochisou.presentation.internal.di.PerActivity
 import org.androidannotations.annotations.Click
 import org.androidannotations.annotations.EFragment
 import org.androidannotations.annotations.ViewById
+import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import rx.lang.kotlin.*
 import javax.inject.Inject
 
 @EFragment(R.layout.fragment_login)
@@ -26,6 +31,9 @@ open class LoginFragment : RxFragment() {
     @ViewById(R.id.token)
     @JvmField
     var tokenEditText: EditText? = null
+    @ViewById(R.id.get_token)
+    @JvmField
+    var getFieldButton: Button? = null
 
     @PerActivity
     var esaService: EsaService? = null
@@ -39,11 +47,12 @@ open class LoginFragment : RxFragment() {
         GochisouApplication.application?.applicationComponent?.inject(this)
     }
 
-    @Click(R.id.login)
-    fun onClickLogin() {
-        val token = tokenEditText?.text.toString()
-        esaService
-        ?.teams(token)
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view
+        ?.findViewById(R.id.login)
+        ?.clicks()
+        ?.switchMap {esaService?.teams(tokenEditText?.text.toString())}
         ?.compose(bindToLifecycle<PageNation.TeamPageNation>())
         ?.subscribeOn(Schedulers.io())
         ?.observeOn(AndroidSchedulers.mainThread())
@@ -56,6 +65,7 @@ open class LoginFragment : RxFragment() {
             Log.e("Gochisou", "load team error", it)
             Toast.makeText(context, "Cloud not get teams", Toast.LENGTH_LONG).show()
         })
+
     }
 
 }

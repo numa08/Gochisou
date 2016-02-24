@@ -28,7 +28,7 @@ def daggerVersion = '2.0'
 def AAVersion = '3.3.2'
 def realmVersion = "0.87.4"
 def rxLifecycleVersion = "0.4.0"
-
+def rxBindingVersion = "0.4.0"
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
@@ -40,6 +40,9 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
+    compile 'io.reactivex:rxkotlin:0.40.1'
+    compile "com.jakewharton.rxbinding:rxbinding:$rxBindingVersion"
+    compile "com.jakewharton.rxbinding:rxbinding-kotlin:$rxBindingVersion"
     compile "com.google.dagger:dagger:${daggerVersion}"
     kapt "com.google.dagger:dagger-compiler:${daggerVersion}"
     provided "javax.annotation:javax.annotation-api:1.2"
@@ -52,6 +55,10 @@ dependencies {
     compile "com.trello:rxlifecycle:$rxLifecycleVersion"
     compile "com.trello:rxlifecycle-components:$rxLifecycleVersion"
     compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'org.jetbrains.anko:anko-sdk15:0.8'
+    compile 'org.jetbrains.anko:anko-support-v4:0.8'
+    compile 'org.jetbrains.anko:anko-support-v4:0.8'
+    compile 'org.jetbrains.anko:anko-appcompat-v7:0.8'
 }
 
 kapt {
