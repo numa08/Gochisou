@@ -8,11 +8,9 @@ import io.realm.RealmConfiguration
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.data.model.Team
 import net.numa08.gochisou.presentation.view.adapter.TeamListAdapter
-import org.androidannotations.annotations.EFragment
 import javax.inject.Inject
 
-@EFragment
-open class TeamListFragment : ListFragment() {
+class TeamListFragment : ListFragment() {
 
     var realmConfiguration: RealmConfiguration? = null
       @Inject set

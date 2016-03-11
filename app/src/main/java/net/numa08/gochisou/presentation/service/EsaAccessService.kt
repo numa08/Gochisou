@@ -1,33 +1,24 @@
 package net.numa08.gochisou.presentation.service
 
+import android.app.IntentService
+import android.content.Intent
 import android.util.Log
-
-import net.numa08.gochisou.data.service.EsaService
-import net.numa08.gochisou.data.model.PageNation
-import net.numa08.gochisou.data.model.Team
-
-import org.androidannotations.annotations.EIntentService
-import org.androidannotations.annotations.ServiceAction
-import org.androidannotations.api.support.app.AbstractIntentService
-
-import javax.inject.Inject
-
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import rx.Observable
-import rx.Observer
+import net.numa08.gochisou.data.model.Team
+import net.numa08.gochisou.data.service.EsaService
 import rx.schedulers.Schedulers
+import javax.inject.Inject
 
-@EIntentService
-open class EsaAccessService : AbstractIntentService(EsaAccessService::class.java.name) {
+class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
+    override fun onHandleIntent(p0: Intent?) {}
 
     var realmConfiguration: RealmConfiguration? = null
       @Inject set
     var esaService: EsaService? = null
       @Inject set
 
-    @ServiceAction
-    open fun loadTeam(token: String) {
+    fun loadTeam(token: String) {
         esaService
         ?.teams(token)
         ?.subscribeOn(Schedulers.io())

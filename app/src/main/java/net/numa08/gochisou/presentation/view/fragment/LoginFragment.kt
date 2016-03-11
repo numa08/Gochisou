@@ -2,8 +2,9 @@ package net.numa08.gochisou.presentation.view.fragment
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import com.jakewharton.rxbinding.view.clicks
@@ -16,24 +17,11 @@ import net.numa08.gochisou.data.model.PageNation
 import net.numa08.gochisou.data.model.Team
 import net.numa08.gochisou.data.service.EsaService
 import net.numa08.gochisou.presentation.internal.di.PerActivity
-import org.androidannotations.annotations.Click
-import org.androidannotations.annotations.EFragment
-import org.androidannotations.annotations.ViewById
-import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import rx.lang.kotlin.*
 import javax.inject.Inject
 
-@EFragment(R.layout.fragment_login)
-open class LoginFragment : RxFragment() {
-
-    @ViewById(R.id.token)
-    @JvmField
-    var tokenEditText: EditText? = null
-    @ViewById(R.id.get_token)
-    @JvmField
-    var getFieldButton: Button? = null
+class LoginFragment : RxFragment() {
 
     @PerActivity
     var esaService: EsaService? = null
@@ -41,10 +29,15 @@ open class LoginFragment : RxFragment() {
     @PerActivity
     var realmConfiguration: RealmConfiguration? = null
       @Inject set
+    val tokenEditText by lazy { view?.findViewById(R.id.token) as? EditText }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GochisouApplication.application?.applicationComponent?.inject(this)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater?.inflate(R.layout.fragment_login, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
