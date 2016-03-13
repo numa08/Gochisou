@@ -4,4 +4,11 @@
     <string name="hint_token">Token</string>
     <string name="button_get_token">Get your token</string>
     <string name="message_invalid_token">ログインできませんでした。\nトークンを再確認してください。</string>
+    <string name="button_next">Next</string>
+    <string name="text_team_url">Team URL</string>
+    <string name="hint_your_team">your-team</string>
+    <string name="esa_io">.esa.io</string>
+    <string name="text_input_your_team_url">ログインしたい esa のチームを入力してください</string>
+    <string name="label_login">Login</string>
+    <string name="button_login">login</string>
 </resources>

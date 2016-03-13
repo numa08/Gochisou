@@ -7,9 +7,11 @@ import net.numa08.gochisou.presentation.view.fragment.LoginFragment
 
 class MainActivity : AppCompatActivity() {
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        supportFragmentManager.beginTransaction().add(R.id.content, LoginFragment()).commit()
+        startActivity(LoginActivity.intent(this))
+        supportFinishAfterTransition()
     }
+
 }

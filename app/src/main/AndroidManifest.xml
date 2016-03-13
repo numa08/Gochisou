@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name=".presentation.service.EsaAccessService_"/>
+        <service android:name=".presentation.service.EsaAccessService"/>
         <activity
             android:name=".presentation.view.activity.MainActivity"
             android:configChanges="orientation|screenSize"
@@ -21,6 +21,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".presentation.view.activity.LoginActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/label_login"
+            android:theme="@style/AppTheme.LoginActivity"
+            />
     </application>
 
 </manifest>
