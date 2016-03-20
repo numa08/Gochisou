@@ -23,7 +23,7 @@ class InputTokenFragment: RxFragment() {
     }
 
     interface PresenterProvider {
-        var presenter: InputTokenPresenter?
+        var inputTokenPresenter: InputTokenPresenter
     }
 
     val loginProfile by lazy { arguments!!.getParcelable<LoginProfile>(ARG_LOGIN_PROFILE) }
@@ -51,7 +51,13 @@ class InputTokenFragment: RxFragment() {
         loginButton
         .clicks()
         .compose(bindToLifecycle<Unit>())
-        .subscribe{(activity as? PresenterProvider)?.presenter?.onClickLogin(LoginProfile(loginProfile.teamURL, tokenText.text.toString()))
-        ?: Log.d("Gochisou", "Activity should implement PresenterProvider")}
+        .subscribe {
+            if (activity != null) {
+                (activity as? PresenterProvider)?.let { it.inputTokenPresenter.onClickLogin(LoginProfile(loginProfile.teamURL, tokenText.text.toString())) }
+                        ?: Log.d("Gochisou", "Activity should implement PresenterProvider")
+            } else {
+                Log.d("Gochisou", "activity is null")
+            }
+        }
     }
 }

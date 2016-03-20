@@ -2,7 +2,7 @@ package net.numa08.gochisou.data.model
 
 import io.realm.RealmObject
 
-class Team(
+open class Team(
         var name: String? = null,
         var privacy: String? = null,
         var description: String? = null,

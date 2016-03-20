@@ -19,7 +19,7 @@ import org.jetbrains.anko.find
 class InputTeamURLFragment : RxFragment(){
 
     interface PresenterProvider{
-        var presenter: InputTeamURLPresenter?
+        var inputTeamURLPresenter: InputTeamURLPresenter
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -42,7 +42,7 @@ class InputTeamURLFragment : RxFragment(){
         nextButton
         .clicks()
         .compose(bindToLifecycle<Unit>())
-        .subscribe{(activity as? PresenterProvider)?.presenter?.onClickNext(LoginProfile(teamText.text.toString()))
+        .subscribe{(activity as? PresenterProvider)?.inputTeamURLPresenter?.onClickNext(LoginProfile(teamText.text.toString()))
                 ?: Log.d("Gochisou", "activity should implements PresenterProvider")
         }
 

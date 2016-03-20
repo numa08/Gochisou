@@ -15,17 +15,7 @@
         android:textStyle="bold"
         style="?attr/colorButtonNormal"
         />
-    <EditText
-        android:id="@+id/edit_token"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/hint_token"
-        android:layout_centerInParent="true"
-        android:lines="1"
-        android:maxLines="1"
-        android:inputType="text"
-        android:textColorHint="?android:attr/textColorPrimaryInverse"
-        />
+
     <Button
         android:id="@+id/button_get_token"
         android:layout_width="wrap_content"
@@ -35,4 +25,27 @@
         android:textStyle="bold"
         style="?attr/colorButtonNormal"
         />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/button_login"
+        android:layout_above="@id/button_get_token"
+        >
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            >
+            <EditText
+                android:id="@+id/edit_token"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_token"
+                android:lines="1"
+                android:maxLines="1"
+                android:inputType="text"
+                android:textColorHint="?android:attr/textColorPrimaryInverse"
+                />
+        </android.support.design.widget.TextInputLayout>
+    </RelativeLayout>
 </RelativeLayout>
