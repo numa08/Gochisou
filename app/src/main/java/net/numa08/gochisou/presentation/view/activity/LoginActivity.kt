@@ -45,8 +45,9 @@ class LoginActivity : AppCompatActivity(),
         inputTokenPresenter.onLoginHandler = { c ,p, r ->
             Log.d("Gochisou", "on login")
             profileRepository.add(p)
+            val ts = r?.body()?.list?.map{ it.loginToken = p.token; it }
             Realm.getInstance(realmConfiguration).use { re ->
-                re.executeTransaction { it.copyToRealmOrUpdate(r?.body()?.list) }
+                re.executeTransaction { it.copyToRealmOrUpdate(ts) }
 
             }
             startActivity(Intent(this, MainActivity::class.java))

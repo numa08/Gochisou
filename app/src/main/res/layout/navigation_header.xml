@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/image_navigation_header"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        tools:src="@mipmap/ic_launcher"
+        tools:ignore="ContentDescription" />
+    <TextView
+        android:id="@+id/text_navigation_header_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_navigation_header"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:lines="1"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:text="伏見桃山の城地を繞めぐっている淀川の水"
+        />
+</RelativeLayout>

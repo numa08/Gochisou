@@ -1,13 +1,11 @@
 package net.numa08.gochisou.data.model
 
 import com.google.gson.annotations.SerializedName
-
-import java.util.Date
-
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.RealmString
 import io.realm.annotations.PrimaryKey
+import java.util.*
 
 open class Post(
         @PrimaryKey

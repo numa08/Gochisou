@@ -5,9 +5,8 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import net.numa08.gochisou.data.model.LoginProfile
 import java.util.*
-import javax.inject.Inject
 
-class LoginProfileRepositoryImpl @Inject constructor(val sharedPreferences: SharedPreferences) : LoginProfileRepository(
+class LoginProfileRepositoryImpl  constructor(val sharedPreferences: SharedPreferences) : LoginProfileRepository(
    GsonBuilder().create().fromJson(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<LoginProfile>>(){}.type)
 ) {
 

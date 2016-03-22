@@ -23,7 +23,7 @@ class InputTokenPresenter @Inject constructor(val service: EsaService) : Present
 
     fun onClickLogin(profile: LoginProfile) {
         service
-            .teams(profile.token)
+            .teams(profile.tokenForHeader)
             .enqueue(object :Callback<PageNation.TeamPageNation> {
                 override fun onFailure(call: Call<PageNation.TeamPageNation>?, t: Throwable?) {
                     onErrorHandler?.invoke(call, t)

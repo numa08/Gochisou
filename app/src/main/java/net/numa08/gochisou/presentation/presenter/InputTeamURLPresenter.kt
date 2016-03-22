@@ -8,6 +8,7 @@ import net.numa08.gochisou.presentation.internal.di.PerActivity
 import net.numa08.gochisou.presentation.view.activity.LoginActivity
 import net.numa08.gochisou.presentation.view.fragment.InputTokenFragment
 import org.jetbrains.anko.support.v4.withArguments
+import org.parceler.Parcels
 
 @PerActivity
 class InputTeamURLPresenter : Presenter {
@@ -20,7 +21,7 @@ class InputTeamURLPresenter : Presenter {
 
     fun onClickNext(profile: LoginProfile) {
         val fragment = InputTokenFragment().withArguments(
-                InputTokenFragment.ARG_LOGIN_PROFILE to profile
+                InputTokenFragment.ARG_LOGIN_PROFILE to Parcels.wrap(profile)
         )
         fragmentManager
         ?.beginTransaction()

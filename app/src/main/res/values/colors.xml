@@ -6,4 +6,5 @@
     <color name="colorTextPrimary">#FFFFFF</color>
     <color name="colorTextPrimaryDisabled">#95BAD3</color>
     <color name="textColorPrimaryInverse">#076859</color>
+    <color name="textColorContent">#000000</color>
 </resources>

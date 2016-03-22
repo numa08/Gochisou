@@ -16,6 +16,7 @@ import net.numa08.gochisou.data.model.LoginProfile
 import net.numa08.gochisou.presentation.presenter.InputTokenPresenter
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.browse
+import org.parceler.Parcels
 
 class InputTokenFragment: RxFragment() {
     companion object {
@@ -26,7 +27,7 @@ class InputTokenFragment: RxFragment() {
         var inputTokenPresenter: InputTokenPresenter
     }
 
-    val loginProfile by lazy { arguments!!.getParcelable<LoginProfile>(ARG_LOGIN_PROFILE) }
+    val loginProfile by lazy { Parcels.unwrap<LoginProfile>(arguments!!.getParcelable(ARG_LOGIN_PROFILE)) }
 
     val getTokenButton by lazy {view!!.find<Button>(R.id.button_get_token)}
     val tokenText by lazy {view!!.find<EditText>(R.id.edit_token)}
