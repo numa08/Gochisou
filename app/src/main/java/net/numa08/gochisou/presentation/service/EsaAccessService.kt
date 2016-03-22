@@ -66,8 +66,12 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
                         val left = res as? Either.Left
                         right?.value?.body()?.list?.let { l ->
                             realm.executeTransaction {
-                                t.posts?.addAll(l)
-                                it.copyToRealmOrUpdate(t)
+                                val ul = it.copyToRealmOrUpdate(l)
+                                ul.forEach {
+                                    if (!(t.posts?.contains(it) ?: false)) {
+                                        t.posts?.add(it)
+                                    }
+                                }
                             }
                         }
                         right?.value?.errorBody()?.let { e ->
