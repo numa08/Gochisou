@@ -8,12 +8,12 @@ import io.realm.annotations.PrimaryKey
 import java.util.*
 
 open class Post(
-        @PrimaryKey
         var number: Long = 0,
         var name: String? = null,
         var tags: RealmList<RealmString>? = null,
         var category: String? = null,
         @SerializedName("full_name")
+        @PrimaryKey
         var fullName: String? = null,
         var isWip: Boolean = false,
         @SerializedName("body_md")
