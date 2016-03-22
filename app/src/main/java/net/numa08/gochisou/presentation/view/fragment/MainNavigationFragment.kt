@@ -1,6 +1,7 @@
 package net.numa08.gochisou.presentation.view.fragment
 
 import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,13 +9,13 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_main_navigaiton.*
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
-import net.numa08.gochisou.data.repositories.LoginProfileRepository
+import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
 import net.numa08.gochisou.presentation.view.adapter.MainNavigationAdapter
 import javax.inject.Inject
 
 class MainNavigationFragment : Fragment() {
 
-    lateinit var loginProfileRepository: LoginProfileRepository
+    lateinit var navigationIdentifierRepository: NavigationIdentifierRepository
         @Inject set
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,8 +28,13 @@ class MainNavigationFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = MainNavigationAdapter(childFragmentManager, loginProfileRepository)
+        val adapter = MainNavigationAdapter(childFragmentManager, navigationIdentifierRepository)
         content_pager.adapter = adapter
+        (activity as? TabLayoutActivity)?.tabLayout?.setupWithViewPager(content_pager)
+    }
+
+    interface TabLayoutActivity {
+        val tabLayout: TabLayout
     }
 
 }

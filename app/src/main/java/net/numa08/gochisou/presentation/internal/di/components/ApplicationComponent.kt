@@ -12,7 +12,7 @@ import net.numa08.gochisou.presentation.view.fragment.PostListFragment
 import net.numa08.gochisou.presentation.view.fragment.TeamListFragment
 
 @PerActivity
-@Component(modules = arrayOf(ApplicationModule::class, EsaServiceModule::class, RealmConfigurationModule::class, LoginPresenterModule::class, LoginProfileRepositoryModule::class))
+@Component(modules = arrayOf(ApplicationModule::class, EsaServiceModule::class, RealmConfigurationModule::class, LoginPresenterModule::class, LoginProfileRepositoryModule::class, NavigationIdentifierRepositoryModule::class))
 interface ApplicationComponent {
     fun context(): Context
 

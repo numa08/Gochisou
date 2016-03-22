@@ -9,7 +9,9 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
+import net.numa08.gochisou.data.model.NavigationIdentifier
 import net.numa08.gochisou.data.repositories.LoginProfileRepository
+import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
 import net.numa08.gochisou.presentation.presenter.InputTeamURLPresenter
 import net.numa08.gochisou.presentation.presenter.InputTokenPresenter
 import net.numa08.gochisou.presentation.view.fragment.InputTeamURLFragment
@@ -31,10 +33,10 @@ class LoginActivity : AppCompatActivity(),
         @Inject set
     lateinit  var realmConfiguration: RealmConfiguration
         @Inject set
-
+    lateinit var navigationIdentifierRepository: NavigationIdentifierRepository
+        @Inject set
     lateinit override var inputTeamURLPresenter: InputTeamURLPresenter
         @Inject set
-
     lateinit override var inputTokenPresenter: InputTokenPresenter
         @Inject set
 
@@ -46,6 +48,7 @@ class LoginActivity : AppCompatActivity(),
             Log.d("Gochisou", "on login")
             profileRepository.add(p)
             val ts = r?.body()?.list?.map{ it.loginToken = p.token; it }
+            ts?.forEach { navigationIdentifierRepository.add(NavigationIdentifier(it.name ?: "", it.icon ?: "", p, NavigationIdentifier.Type.POST)) }
             Realm.getInstance(realmConfiguration).use { re ->
                 re.executeTransaction { it.copyToRealmOrUpdate(ts) }
 

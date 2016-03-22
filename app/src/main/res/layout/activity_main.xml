@@ -44,12 +44,16 @@
                     android:layout_height="match_parent" />
             </FrameLayout>
 
-            <android.support.design.widget.TabLayout
+            <android.support.design.widget.CustomTabLayout
                 android:id="@+id/tabbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="bottom"
+                android:background="#ffffff"
                 app:layout_behavior="android.support.v7.widget.BottomBarBehavior"
+                app:tabMaxWidth="144dp"
+                app:tabPadding="0dp"
+                app:tabIndicatorHeight="0dp"
                 />
         </android.support.design.widget.CoordinatorLayout>
         <android.support.design.widget.NavigationView

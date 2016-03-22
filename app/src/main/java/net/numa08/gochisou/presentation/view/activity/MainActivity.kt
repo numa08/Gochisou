@@ -1,27 +1,23 @@
 package net.numa08.gochisou.presentation.view.activity
 
 import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-import android.util.Log
-import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.navigation_header.*
 import kotlinx.android.synthetic.main.navigation_header.view.*
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
 import net.numa08.gochisou.data.model.Team
 import net.numa08.gochisou.data.repositories.LoginProfileRepository
 import net.numa08.gochisou.presentation.view.fragment.MainNavigationFragment
-import net.numa08.gochisou.presentation.view.fragment.TeamListFragment
-import org.jetbrains.anko.find
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),
+        MainNavigationFragment.TabLayoutActivity {
 
     companion object {
         val BACK_STACK = "${MainActivity::class.simpleName}.BACK_STACK"
@@ -31,6 +27,9 @@ class MainActivity : AppCompatActivity() {
         @Inject set
     lateinit var realmConfiguration: RealmConfiguration
         @Inject set
+
+    override val tabLayout: TabLayout
+        get() = tabbar
 
     val realm by lazy { Realm.getInstance(realmConfiguration) }
 
