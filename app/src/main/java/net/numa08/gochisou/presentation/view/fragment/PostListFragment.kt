@@ -74,9 +74,6 @@ class PostListFragment : Fragment() {
         val team: Team? = realm.where(Team::class.java)
             .equalTo("loginToken", loginProfile.token)
             .findFirst()
-        when(team?.posts?.isValid) {
-            true -> return team?.posts?.where()?.findAllSorted("updateAt", Sort.DESCENDING)
-        }
-        return null
+        return team?.posts?.where()?.findAllSorted("updatedAt", Sort.DESCENDING)
     }
 }

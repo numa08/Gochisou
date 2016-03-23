@@ -15,5 +15,5 @@ open class Team(
         @Expose
         var loginToken: String? = null,
         @Expose
-        var posts: RealmList<Post>? = RealmList()
+        var posts: RealmList<Post>? = null
 ) : RealmObject() {}
