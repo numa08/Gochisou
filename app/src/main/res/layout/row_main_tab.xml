@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="72dp"
+    android:layout_height="@dimen/tab_size"
+    android:lines="1"
+    android:ellipsize="marquee"
+    android:gravity="center"
+    android:textSize="12sp"
+    android:textColor="@color/tab_text"
+    tools:text="伏見桃山の城地を繞めぐっている淀川の水は、そのまま長流数里、浪華江なにわえの大坂城の石垣へも寄せていた。――で、ここら京都あたりの政治的なうごきは、微妙に大坂のほうへすぐ響き、また大坂方の一将一卒の言論も、おそろしく敏感に伏見の城へ聞えて来るらしい。" />
+

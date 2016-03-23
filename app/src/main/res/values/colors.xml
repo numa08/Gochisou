@@ -7,4 +7,7 @@
     <color name="colorTextPrimaryDisabled">#95BAD3</color>
     <color name="textColorPrimaryInverse">#076859</color>
     <color name="textColorContent">#000000</color>
+    <color name="text">#292F33</color>
+    <color name="textSecondary">#8899A6</color>
+    <color name="textTertiary">#B9BEC2</color>
 </resources>
