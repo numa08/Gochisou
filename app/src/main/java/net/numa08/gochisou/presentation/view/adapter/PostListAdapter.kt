@@ -19,7 +19,7 @@ import net.numa08.gochisou.R
 import net.numa08.gochisou.data.model.Post
 import org.jetbrains.anko.find
 
-class PostListAdapter(posts: RealmResults<Post>?, val picasso: Picasso) : RealmBaseRecyclerAdapter<Post, ViewHolder>(posts, true), SwipeItemMangerInterface, SwipeAdapterInterface {
+open class PostListAdapter(posts: RealmResults<Post>?, val picasso: Picasso) : RealmBaseRecyclerAdapter<Post, ViewHolder>(posts, true), SwipeItemMangerInterface, SwipeAdapterInterface {
     val itemManager = SwipeItemRecyclerMangerImpl(this)
 
     init {

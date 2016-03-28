@@ -1,11 +1,7 @@
-package net.numa08.gochisou.presentation
+package net.numa08.gochisou.presentation.view
 
 import net.numa08.gochisou.data.model.Post
 
 interface PostListView {
-
-    fun renderPostList(posts: Collection<Post>)
-
     fun showPost(post: Post)
-
 }

@@ -3,6 +3,7 @@ package net.numa08.gochisou.presentation.view.fragment
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +18,10 @@ import net.numa08.gochisou.R
 import net.numa08.gochisou.data.model.LoginProfile
 import net.numa08.gochisou.data.model.Post
 import net.numa08.gochisou.data.model.Team
+import net.numa08.gochisou.presentation.presenter.PostListPresenter
 import net.numa08.gochisou.presentation.service.EsaAccessService
 import net.numa08.gochisou.presentation.view.adapter.PostListAdapter
+import net.numa08.gochisou.presentation.view.adapter.ViewHolder
 import org.parceler.Parcels
 import javax.inject.Inject
 
@@ -50,7 +53,12 @@ class PostListFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val posts = loadPosts()
-        val adapter = PostListAdapter(loadPosts(), Picasso.with(view?.context))
+        val adapter = object : PostListAdapter(loadPosts(), Picasso.with(view?.context)) {
+            override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
+                super.onBindViewHolder(holder, position)
+                holder?.centerContent?.setOnClickListener { onClickItem(it, realmResults?.get(position)!!) }
+            }
+        }
         listAdapter = adapter
         recycler.adapter = adapter
         recycler.addItemDecoration(DividerItemDecoration(recycler.context, DividerItemDecoration.VERTICAL_LIST))
@@ -70,10 +78,19 @@ class PostListFragment : Fragment() {
         realm.close()
     }
 
+    fun onClickItem(view: View, post: Post) {
+        (activity as? PresenterProvider)?.postListPresenter?.onClickPost(post)
+                ?: Log.d("Gochisou", "on click post at $view 's ${post.fullName}")
+    }
+
     private fun loadPosts() : RealmResults<Post>?  {
         val team: Team? = realm.where(Team::class.java)
             .equalTo("loginToken", loginProfile.token)
             .findFirst()
         return team?.posts?.where()?.findAllSorted("updatedAt", Sort.DESCENDING)
+    }
+
+    interface PresenterProvider {
+        val postListPresenter: PostListPresenter
     }
 }

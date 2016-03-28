@@ -4,10 +4,13 @@ import android.content.Context
 import dagger.Component
 import net.numa08.gochisou.presentation.internal.di.PerActivity
 import net.numa08.gochisou.presentation.internal.di.modules.*
+import net.numa08.gochisou.presentation.presenter.PostListPresenter
 import net.numa08.gochisou.presentation.service.EsaAccessService
 import net.numa08.gochisou.presentation.view.activity.LoginActivity
 import net.numa08.gochisou.presentation.view.activity.MainActivity
+import net.numa08.gochisou.presentation.view.activity.PostDetailActivity
 import net.numa08.gochisou.presentation.view.fragment.MainNavigationFragment
+import net.numa08.gochisou.presentation.view.fragment.PostDetailFragment
 import net.numa08.gochisou.presentation.view.fragment.PostListFragment
 import net.numa08.gochisou.presentation.view.fragment.TeamListFragment
 
@@ -27,4 +30,10 @@ interface ApplicationComponent {
     fun inject(fragment: PostListFragment)
 
     fun inject(fragment: MainNavigationFragment)
+
+    fun inject(activity: PostDetailActivity)
+
+    fun inject(fragment: PostDetailFragment)
+
+    fun postListPresenter(): PostListPresenter
 }

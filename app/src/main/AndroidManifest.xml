@@ -28,6 +28,10 @@
             android:label="@string/label_login"
             android:theme="@style/AppTheme.LoginActivity"
             />
+        <activity
+            android:name=".presentation.view.activity.PostDetailActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="Detail" />
     </application>
 
 </manifest>

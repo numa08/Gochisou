@@ -11,21 +11,33 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navigation_header.view.*
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
+import net.numa08.gochisou.data.model.Post
 import net.numa08.gochisou.data.model.Team
 import net.numa08.gochisou.data.repositories.LoginProfileRepository
+import net.numa08.gochisou.presentation.presenter.PostListPresenter
+import net.numa08.gochisou.presentation.view.PostListView
 import net.numa08.gochisou.presentation.view.fragment.MainNavigationFragment
+import net.numa08.gochisou.presentation.view.fragment.PostListFragment
+import org.jetbrains.anko.intentFor
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(),
-        MainNavigationFragment.TabLayoutActivity {
+        MainNavigationFragment.TabLayoutActivity,
+        PostListFragment.PresenterProvider,
+        PostListView {
 
     companion object {
+
         val BACK_STACK = "${MainActivity::class.simpleName}.BACK_STACK"
+
     }
 
     lateinit var loginProfileRepository: LoginProfileRepository
         @Inject set
+
     lateinit var realmConfiguration: RealmConfiguration
+        @Inject set
+    lateinit override var postListPresenter: PostListPresenter
         @Inject set
 
     override val tabLayout: TabLayout
@@ -36,6 +48,8 @@ class MainActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GochisouApplication.application?.applicationComponent?.inject(this)
+        postListPresenter = GochisouApplication.application?.applicationComponent?.postListPresenter()!!
+        postListPresenter.postListView = this
         setContentView(R.layout.activity_main)
 
         if(loginProfileRepository.isEmpty()) {
@@ -74,6 +88,10 @@ class MainActivity : AppCompatActivity(),
     override fun onDestroy() {
         super.onDestroy()
         realm.close()
+    }
+
+    override fun showPost(post: Post) {
+        startActivity(intentFor<PostDetailActivity>("fullName" to (post.fullName ?: "")))
     }
 
 }
