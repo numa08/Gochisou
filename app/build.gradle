@@ -60,6 +60,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compile 'org.parceler:parceler-api:1.0.4'
     kapt 'org.parceler:parceler:1.0.4'
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
 }
 
 kapt {

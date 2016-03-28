@@ -10,4 +10,6 @@
     <color name="text">#292F33</color>
     <color name="textSecondary">#8899A6</color>
     <color name="textTertiary">#B9BEC2</color>
+    <color name="background">#ffffff</color>
+    <color name="background_secondary">#F6F7F8</color>
 </resources>
