@@ -1,19 +1,17 @@
 package net.numa08.gochisou.data.repositories
 
 import android.content.SharedPreferences
-import com.google.gson.GsonBuilder
+import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import net.numa08.gochisou.data.model.NavigationIdentifier
 import java.util.*
 
-class NavigaitonIdentifierRepositoryImpl(val sharedPreferences: SharedPreferences) : NavigationIdentifierRepository(
-        GsonBuilder().create().fromJson(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<NavigationIdentifier>>() {}.type)
+class NavigationIdentifierRepositoryImpl(val sharedPreferences: SharedPreferences, val gson: Gson) : NavigationIdentifierRepository(
+        gson.fromJson(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<NavigationIdentifier>>() {}.type)
 ) {
     companion object {
-        val PREFERENCE_KEY = "${NavigaitonIdentifierRepositoryImpl::class.simpleName}.PREFERENCE_KEY"
+        val PREFERENCE_KEY = "${NavigationIdentifierRepositoryImpl::class.simpleName}.PREFERENCE_KEY"
     }
-
-    val gson = GsonBuilder().create()
 
     override fun add(element: NavigationIdentifier): Boolean = super.add(element).let {
         write()

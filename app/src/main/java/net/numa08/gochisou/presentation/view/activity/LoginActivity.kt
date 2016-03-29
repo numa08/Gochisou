@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity(),
             Log.d("Gochisou", "on login")
             profileRepository.add(p)
             val ts = r?.body()?.list?.map{ it.loginToken = p.token; it }
-            ts?.forEach { navigationIdentifierRepository.add(NavigationIdentifier(it.name ?: "", it.icon ?: "", p, NavigationIdentifier.Type.POST)) }
+            ts?.forEach { navigationIdentifierRepository.add(NavigationIdentifier.PostNavigationIdentifier(it.name ?: "", it.icon ?: "", p)) }
             Realm.getInstance(realmConfiguration).use { re ->
                 re.executeTransaction { it.copyToRealmOrUpdate(ts) }
 

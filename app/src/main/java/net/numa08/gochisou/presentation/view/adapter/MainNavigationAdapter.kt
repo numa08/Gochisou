@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import net.numa08.gochisou.R
+import net.numa08.gochisou.data.model.NavigationIdentifier
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
+import net.numa08.gochisou.presentation.view.fragment.PostDetailFragment
 import net.numa08.gochisou.presentation.view.fragment.PostListFragment
 import org.jetbrains.anko.support.v4.withArguments
 import org.parceler.Parcels
@@ -25,9 +27,18 @@ class MainNavigationAdapter(fragmentManager: FragmentManager, val navigationIden
 
     override fun getItem(position: Int): Fragment? =
             navigationIdentifierRepository[position].let {
-            PostListFragment().withArguments(
-                    PostListFragment.ARG_LOGIN_PROFILE to Parcels.wrap(it.loginProfile)
-            )
+                when (it) {
+                    is NavigationIdentifier.PostNavigationIdentifier -> {
+                        PostListFragment().withArguments(
+                                PostListFragment.ARG_LOGIN_PROFILE to Parcels.wrap(it.loginProfile))
+                    }
+                    is NavigationIdentifier.PostDetailNavigationIdentifier -> {
+                        PostDetailFragment().withArguments(
+                                "loginProfile" to Parcels.wrap(it.loginProfile),
+                                "fullName" to it.fullName
+                        )
+                    }
+                }
         }
 
     override fun getCount(): Int =
