@@ -2,6 +2,7 @@ package net.numa08.gochisou.presentation.internal.di.components
 
 import android.content.Context
 import dagger.Component
+import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
 import net.numa08.gochisou.presentation.internal.di.PerActivity
 import net.numa08.gochisou.presentation.internal.di.modules.*
 import net.numa08.gochisou.presentation.presenter.PostListPresenter
@@ -18,6 +19,8 @@ import net.numa08.gochisou.presentation.view.fragment.TeamListFragment
 @Component(modules = arrayOf(ApplicationModule::class, EsaServiceModule::class, RealmConfigurationModule::class, LoginPresenterModule::class, LoginProfileRepositoryModule::class, NavigationIdentifierRepositoryModule::class))
 interface ApplicationComponent {
     fun context(): Context
+
+    fun navigationIdentifierRepository(): NavigationIdentifierRepository
 
     fun inject(activity: MainActivity)
 

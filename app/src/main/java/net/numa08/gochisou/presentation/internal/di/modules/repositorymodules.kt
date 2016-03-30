@@ -8,8 +8,10 @@ import net.numa08.gochisou.data.repositories.LoginProfileRepository
 import net.numa08.gochisou.data.repositories.LoginProfileRepositoryImpl
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepositoryImpl
+import javax.inject.Singleton
 
 @Module
+@Singleton
 class LoginProfileRepositoryModule {
 
     @Provides
@@ -19,7 +21,9 @@ class LoginProfileRepositoryModule {
 }
 
 @Module
+@Singleton
 class NavigationIdentifierRepositoryModule {
+
     @Provides
     fun providesNavigationIdentifierRepository(sharedPreferences: SharedPreferences): NavigationIdentifierRepository
             = NavigationIdentifierRepositoryImpl(sharedPreferences, NavigationIdentifierMapper().gson)

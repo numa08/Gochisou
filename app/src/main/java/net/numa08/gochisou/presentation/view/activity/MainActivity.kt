@@ -19,6 +19,7 @@ import net.numa08.gochisou.presentation.view.PostListView
 import net.numa08.gochisou.presentation.view.fragment.MainNavigationFragment
 import net.numa08.gochisou.presentation.view.fragment.PostListFragment
 import org.jetbrains.anko.intentFor
+import org.parceler.Parcels
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(),
@@ -90,8 +91,10 @@ class MainActivity : AppCompatActivity(),
         realm.close()
     }
 
-    override fun showPost(post: Post) {
-        startActivity(intentFor<PostDetailActivity>("fullName" to (post.fullName ?: "")))
+    override fun showPost(fragment: PostListFragment, post: Post) {
+        startActivity(intentFor<PostDetailActivity>(
+                "fullName" to (post.fullName ?: ""),
+                "loginProfile" to Parcels.wrap(fragment.loginProfile)))
     }
 
 }

@@ -79,7 +79,7 @@ class PostListFragment : Fragment() {
     }
 
     fun onClickItem(view: View, post: Post) {
-        (activity as? PresenterProvider)?.postListPresenter?.onClickPost(post)
+        (activity as? PresenterProvider)?.postListPresenter?.onClickPost(this, post)
                 ?: Log.d("Gochisou", "on click post at $view 's ${post.fullName}")
     }
 

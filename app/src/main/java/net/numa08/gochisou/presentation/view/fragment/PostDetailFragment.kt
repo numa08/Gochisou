@@ -10,21 +10,25 @@ import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.fragment_post_detail.*
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
+import net.numa08.gochisou.data.model.LoginProfile
 import net.numa08.gochisou.data.model.Post
+import org.parceler.Parcels
 import javax.inject.Inject
 
-class PostDetailFragment() : Fragment() {
+open class PostDetailFragment() : Fragment() {
 
     lateinit var realmConfiguration: RealmConfiguration
         @Inject set
     lateinit var realm: Realm
+    lateinit var post: Post
 
     val fullName by lazy { arguments!!.getString("fullName") }
-
+    val loginProfile by lazy { Parcels.unwrap<LoginProfile>(arguments!!.getParcelable("loginProfile")) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GochisouApplication.application?.applicationComponent?.inject(this)
         realm = Realm.getInstance(realmConfiguration)
+        post = realm.where(Post::class.java).equalTo("fullName", fullName).findFirst()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View?
@@ -32,7 +36,6 @@ class PostDetailFragment() : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val post = realm.where(Post::class.java).equalTo("fullName", fullName).findFirst()
         webview.loadData(post.bodyHTML, "text/html; charset=utf-8", "UTF-8")
     }
 

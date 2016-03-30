@@ -13,6 +13,14 @@ class NavigationIdentifierRepositoryImpl(val sharedPreferences: SharedPreference
         val PREFERENCE_KEY = "${NavigationIdentifierRepositoryImpl::class.simpleName}.PREFERENCE_KEY"
     }
 
+    init {
+        sharedPreferences.registerOnSharedPreferenceChangeListener { p, k ->
+            if (k == PREFERENCE_KEY) {
+                sync()
+            }
+        }
+    }
+
     override fun add(element: NavigationIdentifier): Boolean = super.add(element).let {
         write()
         it
@@ -31,6 +39,24 @@ class NavigationIdentifierRepositoryImpl(val sharedPreferences: SharedPreference
     override fun clear() {
         super.clear()
         write()
+    }
+
+    override val size: Int
+        get() = gson.fromJson<MutableList<NavigationIdentifier>>(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<NavigationIdentifier>>() {}.type).size
+
+    override fun get(index: Int): NavigationIdentifier {
+        return gson.fromJson<MutableList<NavigationIdentifier>>(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<NavigationIdentifier>>() {}.type)[index]
+    }
+
+    private fun sync() {
+        val list = gson.fromJson<MutableList<NavigationIdentifier>>(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<NavigationIdentifier>>() {}.type)
+        repeat(list.size, {
+            if (it < super.size) {
+                super.set(it, list[it])
+            } else {
+                super.add(list[it])
+            }
+        })
     }
 
     private fun write() {
