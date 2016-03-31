@@ -8,17 +8,13 @@ import java.util.*
 
 class NavigationIdentifierRepositoryImpl(val sharedPreferences: SharedPreferences, val gson: Gson) : NavigationIdentifierRepository(
         gson.fromJson(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<NavigationIdentifier>>() {}.type)
-) {
+), SharedPreferences.OnSharedPreferenceChangeListener {
     companion object {
         val PREFERENCE_KEY = "${NavigationIdentifierRepositoryImpl::class.simpleName}.PREFERENCE_KEY"
     }
 
     init {
-        sharedPreferences.registerOnSharedPreferenceChangeListener { p, k ->
-            if (k == PREFERENCE_KEY) {
-                sync()
-            }
-        }
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun add(element: NavigationIdentifier): Boolean = super.add(element).let {
@@ -41,13 +37,6 @@ class NavigationIdentifierRepositoryImpl(val sharedPreferences: SharedPreference
         write()
     }
 
-    override val size: Int
-        get() = gson.fromJson<MutableList<NavigationIdentifier>>(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<NavigationIdentifier>>() {}.type).size
-
-    override fun get(index: Int): NavigationIdentifier {
-        return gson.fromJson<MutableList<NavigationIdentifier>>(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<NavigationIdentifier>>() {}.type)[index]
-    }
-
     private fun sync() {
         val list = gson.fromJson<MutableList<NavigationIdentifier>>(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<NavigationIdentifier>>() {}.type)
         repeat(list.size, {
@@ -63,6 +52,12 @@ class NavigationIdentifierRepositoryImpl(val sharedPreferences: SharedPreference
         sharedPreferences.edit()
                 .putString(PREFERENCE_KEY, gson.toJson(NavigationIdentifierList(this), NavigationIdentifierList::class.java))
                 .apply()
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if(key == PREFERENCE_KEY) {
+            sync()
+        }
     }
 }
 
