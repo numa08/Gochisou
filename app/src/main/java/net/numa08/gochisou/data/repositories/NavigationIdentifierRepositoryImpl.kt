@@ -8,17 +8,13 @@ import java.util.*
 
 class NavigationIdentifierRepositoryImpl(val sharedPreferences: SharedPreferences, val gson: Gson) : NavigationIdentifierRepository(
         gson.fromJson(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<NavigationIdentifier>>() {}.type)
-) {
+), SharedPreferences.OnSharedPreferenceChangeListener {
     companion object {
         val PREFERENCE_KEY = "${NavigationIdentifierRepositoryImpl::class.simpleName}.PREFERENCE_KEY"
     }
 
     init {
-        sharedPreferences.registerOnSharedPreferenceChangeListener { p, k ->
-            if (k == PREFERENCE_KEY) {
-                sync()
-            }
-        }
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun add(element: NavigationIdentifier): Boolean = super.add(element).let {
@@ -36,16 +32,19 @@ class NavigationIdentifierRepositoryImpl(val sharedPreferences: SharedPreference
         it
     }
 
-    override fun clear() {
-        super.clear()
+    override fun removeAt(index: Int): NavigationIdentifier = super.removeAt(index).let { write();it }
+
+    override fun set(index: Int, element: NavigationIdentifier): NavigationIdentifier = super.set(index, element).let { write();it }
+
+    override fun move(from: Int, to: Int) {
+        val i = super.removeAt(from)
+        super.add(to, i)
         write()
     }
 
-    override val size: Int
-        get() = gson.fromJson<MutableList<NavigationIdentifier>>(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<NavigationIdentifier>>() {}.type).size
-
-    override fun get(index: Int): NavigationIdentifier {
-        return gson.fromJson<MutableList<NavigationIdentifier>>(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<NavigationIdentifier>>() {}.type)[index]
+    override fun clear() {
+        super.clear()
+        write()
     }
 
     private fun sync() {
@@ -63,6 +62,12 @@ class NavigationIdentifierRepositoryImpl(val sharedPreferences: SharedPreference
         sharedPreferences.edit()
                 .putString(PREFERENCE_KEY, gson.toJson(NavigationIdentifierList(this), NavigationIdentifierList::class.java))
                 .apply()
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if(key == PREFERENCE_KEY) {
+            sync()
+        }
     }
 }
 

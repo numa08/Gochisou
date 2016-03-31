@@ -1,9 +1,11 @@
 package net.numa08.gochisou.presentation.view.activity
 
 import android.os.Bundle
+import android.support.design.widget.NavigationView
 import android.support.design.widget.TabLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import com.squareup.picasso.Picasso
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -25,7 +27,8 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity(),
         MainNavigationFragment.TabLayoutActivity,
         PostListFragment.PresenterProvider,
-        PostListView {
+        PostListView,
+        NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
 
@@ -52,7 +55,7 @@ class MainActivity : AppCompatActivity(),
         postListPresenter = GochisouApplication.application?.applicationComponent?.postListPresenter()!!
         postListPresenter.postListView = this
         setContentView(R.layout.activity_main)
-
+        navigation_view.setNavigationItemSelectedListener(this)
         if(loginProfileRepository.isEmpty()) {
             startActivity(LoginActivity.intent(this))
             supportFinishAfterTransition()
@@ -85,6 +88,18 @@ class MainActivity : AppCompatActivity(),
             supportFinishAfterTransition()
         }
     }
+
+    override fun onNavigationItemSelected(item: MenuItem?): Boolean = item?.let {
+        when (it.itemId) {
+            R.id.edit_navigation_identifier -> {
+                startActivity(intentFor<EditNavigationIdentifierActivity>())
+                true
+            }
+            else -> {
+                false
+            }
+        }
+    } ?: false
 
     override fun onDestroy() {
         super.onDestroy()

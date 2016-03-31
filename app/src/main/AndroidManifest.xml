@@ -32,6 +32,10 @@
             android:name=".presentation.view.activity.PostDetailActivity"
             android:configChanges="orientation|screenSize"
             android:label="Detail" />
+        <activity
+            android:name=".presentation.view.activity.EditNavigationIdentifierActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/label_edit_navigation_identifier" />
     </application>
 
 </manifest>
