@@ -11,4 +11,6 @@
     <string name="text_input_your_team_url">ログインしたい esa のチームを入力してください</string>
     <string name="label_login">Login</string>
     <string name="button_login">login</string>
+    <string name="menu_edit_navigation_identifier">タブを編集する</string>
+    <string name="label_edit_navigation_identifier">タブを編集する</string>
 </resources>

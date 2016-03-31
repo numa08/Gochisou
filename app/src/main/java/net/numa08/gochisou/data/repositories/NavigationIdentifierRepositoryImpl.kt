@@ -32,6 +32,16 @@ class NavigationIdentifierRepositoryImpl(val sharedPreferences: SharedPreference
         it
     }
 
+    override fun removeAt(index: Int): NavigationIdentifier = super.removeAt(index).let { write();it }
+
+    override fun set(index: Int, element: NavigationIdentifier): NavigationIdentifier = super.set(index, element).let { write();it }
+
+    override fun move(from: Int, to: Int) {
+        val i = super.removeAt(from)
+        super.add(to, i)
+        write()
+    }
+
     override fun clear() {
         super.clear()
         write()

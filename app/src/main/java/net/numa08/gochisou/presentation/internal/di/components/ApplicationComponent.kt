@@ -10,10 +10,7 @@ import net.numa08.gochisou.presentation.service.EsaAccessService
 import net.numa08.gochisou.presentation.view.activity.LoginActivity
 import net.numa08.gochisou.presentation.view.activity.MainActivity
 import net.numa08.gochisou.presentation.view.activity.PostDetailActivity
-import net.numa08.gochisou.presentation.view.fragment.MainNavigationFragment
-import net.numa08.gochisou.presentation.view.fragment.PostDetailFragment
-import net.numa08.gochisou.presentation.view.fragment.PostListFragment
-import net.numa08.gochisou.presentation.view.fragment.TeamListFragment
+import net.numa08.gochisou.presentation.view.fragment.*
 
 @PerActivity
 @Component(modules = arrayOf(ApplicationModule::class, EsaServiceModule::class, RealmConfigurationModule::class, LoginPresenterModule::class, LoginProfileRepositoryModule::class, NavigationIdentifierRepositoryModule::class))
@@ -37,6 +34,8 @@ interface ApplicationComponent {
     fun inject(activity: PostDetailActivity)
 
     fun inject(fragment: PostDetailFragment)
+
+    fun inject(fragmnet: EditNavigationIdentifierFragment)
 
     fun postListPresenter(): PostListPresenter
 }
