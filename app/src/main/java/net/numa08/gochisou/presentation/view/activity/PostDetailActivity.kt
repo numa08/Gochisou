@@ -2,7 +2,6 @@ package net.numa08.gochisou.presentation.view.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.*
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -54,7 +53,7 @@ class PostDetailActivity() : AppCompatActivity() {
     }
 }
 
-class Fragment : PostDetailFragment(), NavigationAddable {
+internal class Fragment : PostDetailFragment(), NavigationAddable {
     override var navigationIdentifierRepository: NavigationIdentifierRepository
             = GochisouApplication.application?.applicationComponent?.navigationIdentifierRepository()!!
 
@@ -67,11 +66,6 @@ class Fragment : PostDetailFragment(), NavigationAddable {
                         fullName = post.fullName ?: "")
             }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d("Gochisou", "repository: $navigationIdentifierRepository")
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -79,12 +73,15 @@ class Fragment : PostDetailFragment(), NavigationAddable {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.fragment_post_detail, menu)
+        if (!navigationIdentifierRepository.contains(navigationIdentifier)) {
+            inflater?.inflate(R.menu.fragment_post_detail, menu)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.add_navigation_identifier) {
             onAddClicked()
+            activity?.supportFinishAfterTransition()
             return true
         }
         return super.onOptionsItemSelected(item)
