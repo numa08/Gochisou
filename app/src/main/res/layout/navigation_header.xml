@@ -37,7 +37,7 @@
         android:layout_below="@id/image_navigation_header"
         android:layout_alignStart="@id/image_navigation_header"
         android:gravity="center"
-        android:text="files"
+        android:text="list"
         android:textSize="32sp"
         android:textColor="@color/textTertiary"
         app:symbol="fonts/LigatureSymbols-2.11.ttf"
