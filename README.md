@@ -29,3 +29,4 @@ Gochisou :meat_on_bone: は `MIT License` で公開されている OSS です。
  - 新規投稿が可能になります
  - Deploygate を利用して、常に最新版の公開が可能になります
  - xxx-ci を利用してビルドが可能になります
+
