@@ -29,4 +29,4 @@
 -keep @io.realm.internal.Keep class * { *; }
 -dontwarn javax.**
 -dontwarn io.realm.**
--keep android.support.v7.widget.BottomBarBehavior
+-keep net.numa08.gochisou.presentation.widget.BottomBarBehavior

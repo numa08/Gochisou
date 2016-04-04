@@ -2,7 +2,6 @@ package net.numa08.gochisou.presentation.view.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.DividerItemDecoration
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +21,7 @@ import net.numa08.gochisou.presentation.presenter.PostListPresenter
 import net.numa08.gochisou.presentation.service.EsaAccessService
 import net.numa08.gochisou.presentation.view.adapter.PostListAdapter
 import net.numa08.gochisou.presentation.view.adapter.ViewHolder
+import net.numa08.gochisou.presentation.widget.DividerItemDecoration
 import org.parceler.Parcels
 import javax.inject.Inject
 

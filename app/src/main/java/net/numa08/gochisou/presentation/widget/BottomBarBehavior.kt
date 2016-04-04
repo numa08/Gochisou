@@ -1,4 +1,4 @@
-package android.support.v7.widget
+package net.numa08.gochisou.presentation.widget
 
 import android.content.Context
 import android.support.design.widget.AppBarLayout

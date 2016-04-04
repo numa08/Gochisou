@@ -3,7 +3,6 @@ package net.numa08.gochisou.presentation.view.fragment
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_edit_navigation_identifier.*
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
+import net.numa08.gochisou.presentation.widget.DividerItemDecoration
 import org.jetbrains.anko.find
 import javax.inject.Inject
 

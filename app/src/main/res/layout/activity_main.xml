@@ -44,13 +44,13 @@
                     android:layout_height="match_parent" />
             </FrameLayout>
 
-            <android.support.design.widget.CustomTabLayout
+            <net.numa08.gochisou.presentation.widget.CustomTabLayout
                 android:id="@+id/tabbar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/tab_size"
                 android:layout_gravity="bottom"
                 android:background="#ffffff"
-                app:layout_behavior="android.support.v7.widget.BottomBarBehavior"
+                app:layout_behavior="net.numa08.gochisou.presentation.widget.BottomBarBehavior"
                 app:tabMaxWidth="144dp"
                 app:tabPadding="0dp"
                 app:tabIndicatorHeight="0dp"

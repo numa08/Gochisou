@@ -1,6 +1,5 @@
 package net.numa08.gochisou.presentation.view.adapter
 
-import android.support.design.widget.CustomTabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
@@ -13,6 +12,7 @@ import net.numa08.gochisou.data.model.NavigationIdentifier
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
 import net.numa08.gochisou.presentation.view.fragment.PostDetailFragment
 import net.numa08.gochisou.presentation.view.fragment.PostListFragment
+import net.numa08.gochisou.presentation.widget.CustomTabLayout
 import org.jetbrains.anko.support.v4.withArguments
 import org.parceler.Parcels
 

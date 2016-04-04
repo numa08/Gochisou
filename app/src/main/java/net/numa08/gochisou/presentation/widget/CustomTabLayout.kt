@@ -1,6 +1,7 @@
-package android.support.design.widget
+package net.numa08.gochisou.presentation.widget
 
 import android.content.Context
+import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.View
