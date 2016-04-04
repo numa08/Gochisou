@@ -14,4 +14,5 @@
     <string name="menu_edit_navigation_identifier">タブを編集する</string>
     <string name="label_edit_navigation_identifier">タブを編集する</string>
     <string name="menu_add_team">別のチームにログインする</string>
+    <string name="label_post_list">投稿一覧</string>
 </resources>

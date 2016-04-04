@@ -9,7 +9,7 @@
     android:clickable="true"
     android:foreground="?attr/selectableItemBackground">
 
-    <android.widget.CustomSymbolButton
+    <net.numa08.gochisou.presentation.widget.CustomSymbolButton
         android:id="@+id/handle"
         android:layout_width="72dp"
         android:layout_height="match_parent"

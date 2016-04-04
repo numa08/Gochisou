@@ -10,4 +10,5 @@ interface NavigationAddable {
         navigationIdentifierRepository.add(navigationIdentifier)
     }
 
+    fun shouldShowAddButton() = !navigationIdentifierRepository.contains(navigationIdentifier)
 }

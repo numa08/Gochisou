@@ -25,7 +25,7 @@ import net.numa08.gochisou.presentation.view.adapter.ViewHolder
 import org.parceler.Parcels
 import javax.inject.Inject
 
-class PostListFragment : Fragment() {
+open class PostListFragment : Fragment() {
 
     companion object {
         val ARG_LOGIN_PROFILE = "${PostListFragment::class.simpleName}.ARG_LOGIN_PROFILE"

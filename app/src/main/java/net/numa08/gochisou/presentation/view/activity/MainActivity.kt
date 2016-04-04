@@ -6,7 +6,6 @@ import android.support.design.widget.TabLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import com.squareup.picasso.Picasso
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.activity_main.*
@@ -20,6 +19,7 @@ import net.numa08.gochisou.presentation.presenter.PostListPresenter
 import net.numa08.gochisou.presentation.view.PostListView
 import net.numa08.gochisou.presentation.view.fragment.MainNavigationFragment
 import net.numa08.gochisou.presentation.view.fragment.PostListFragment
+import net.numa08.gochisou.presentation.widget.NavigationHeader
 import org.jetbrains.anko.intentFor
 import org.parceler.Parcels
 import javax.inject.Inject
@@ -65,13 +65,22 @@ class MainActivity : AppCompatActivity(),
             drawer.addDrawerListener(drawerToggle)
             drawerToggle.syncState()
 
-            loginProfileRepository.first().let {
+            loginProfileRepository.first().let { p ->
                 val team : Team? = realm.where(Team::class.java)
-                    .equalTo("loginToken", it.token)
+                        .equalTo("loginToken", p.token)
                     .findFirst()
-                team?.let {
-                    Picasso.with(this).load(it.icon).into(navigation_view.getHeaderView(0).image_navigation_header)
-                    navigation_view.getHeaderView(0).text_navigation_header_title.text = it.name
+                val header = navigation_view.getHeaderView(0)?.navigation_header
+                if (header != null && team != null) {
+                    header.team = team
+                    header.listener = object : NavigationHeader.ActionListener {
+                        override fun onClickPostList(header: NavigationHeader?) {
+                            startActivity(intentFor<PostListActivity>(PostListActivity.ARG_LOGIN_PROFILE to Parcels.wrap(p)))
+                        }
+
+                        override fun onClickUserList(header: NavigationHeader?) {
+                        }
+
+                    }
                 }
             }
 
@@ -107,9 +116,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun showPost(fragment: PostListFragment, post: Post) {
-        startActivity(intentFor<PostDetailActivity>(
-                "fullName" to (post.fullName ?: ""),
-                "loginProfile" to Parcels.wrap(fragment.loginProfile)))
+        showPostDetail(fragment, post)
     }
 
 }

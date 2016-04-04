@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <android.widget.CustomSymbolButton
+            <net.numa08.gochisou.presentation.widget.CustomSymbolButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="copy"
@@ -38,7 +38,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <android.widget.CustomSymbolButton
+            <net.numa08.gochisou.presentation.widget.CustomSymbolButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="files"

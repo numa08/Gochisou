@@ -1,8 +1,9 @@
-package android.widget
+package net.numa08.gochisou.presentation.widget
 
 import android.content.Context
 import android.graphics.Typeface
 import android.util.AttributeSet
+import android.widget.Button
 import net.numa08.gochisou.R
 
 class CustomSymbolButton : Button {

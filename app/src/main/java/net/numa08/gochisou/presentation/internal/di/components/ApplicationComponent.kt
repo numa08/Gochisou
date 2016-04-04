@@ -10,6 +10,7 @@ import net.numa08.gochisou.presentation.service.EsaAccessService
 import net.numa08.gochisou.presentation.view.activity.LoginActivity
 import net.numa08.gochisou.presentation.view.activity.MainActivity
 import net.numa08.gochisou.presentation.view.activity.PostDetailActivity
+import net.numa08.gochisou.presentation.view.activity.PostListActivity
 import net.numa08.gochisou.presentation.view.fragment.*
 
 @PerActivity
@@ -35,7 +36,9 @@ interface ApplicationComponent {
 
     fun inject(fragment: PostDetailFragment)
 
-    fun inject(fragmnet: EditNavigationIdentifierFragment)
+    fun inject(fragment: EditNavigationIdentifierFragment)
+
+    fun inject(activity: PostListActivity)
 
     fun postListPresenter(): PostListPresenter
 }
