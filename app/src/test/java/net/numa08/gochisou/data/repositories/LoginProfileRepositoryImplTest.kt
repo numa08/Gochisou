@@ -44,4 +44,12 @@ class LoginProfileRepositoryImplTest {
         val newRepository = LoginProfileRepositoryImpl(repository.sharedPreferences)
         assert(newRepository[0] == profile)
     }
+
+    @Test
+    fun findLoginProfileI() {
+        val profile = LoginProfile("team", "token")
+        repository.add(profile)
+        val found = repository.find("token")
+        assert(found!! == profile)
+    }
 }

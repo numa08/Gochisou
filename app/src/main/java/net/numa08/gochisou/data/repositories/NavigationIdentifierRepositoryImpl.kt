@@ -1,17 +1,19 @@
 package net.numa08.gochisou.data.repositories
 
 import android.content.SharedPreferences
-import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import net.numa08.gochisou.data.entity.mapper.NavigationIdentifierMapper
 import net.numa08.gochisou.data.model.NavigationIdentifier
 import java.util.*
 
-class NavigationIdentifierRepositoryImpl(val sharedPreferences: SharedPreferences, val gson: Gson) : NavigationIdentifierRepository(
-        gson.fromJson(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<NavigationIdentifier>>() {}.type)
+class NavigationIdentifierRepositoryImpl(val sharedPreferences: SharedPreferences) : NavigationIdentifierRepository(
+        NavigationIdentifierMapper().gson.fromJson(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<NavigationIdentifier>>() {}.type)
 ), SharedPreferences.OnSharedPreferenceChangeListener {
     companion object {
         val PREFERENCE_KEY = "${NavigationIdentifierRepositoryImpl::class.simpleName}.PREFERENCE_KEY"
     }
+
+    val gson = NavigationIdentifierMapper().gson
 
     init {
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
@@ -60,7 +62,7 @@ class NavigationIdentifierRepositoryImpl(val sharedPreferences: SharedPreference
 
     private fun write() {
         sharedPreferences.edit()
-                .putString(PREFERENCE_KEY, gson.toJson(NavigationIdentifierList(this), NavigationIdentifierList::class.java))
+                .putString(PREFERENCE_KEY, gson.toJson(this))
                 .apply()
     }
 
@@ -70,5 +72,3 @@ class NavigationIdentifierRepositoryImpl(val sharedPreferences: SharedPreference
         }
     }
 }
-
-private class NavigationIdentifierList(collection: Collection<NavigationIdentifier> = emptyList()) : ArrayList<NavigationIdentifier>(collection)

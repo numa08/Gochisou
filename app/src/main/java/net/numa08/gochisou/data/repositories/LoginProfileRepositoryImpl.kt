@@ -38,10 +38,8 @@ class LoginProfileRepositoryImpl  constructor(val sharedPreferences: SharedPrefe
 
     private fun write() {
         sharedPreferences.edit()
-                .putString(PREFERENCE_KEY, gson.toJson(LoginProfileList(this), LoginProfileList::class.java))
+                .putString(PREFERENCE_KEY, gson.toJson(this))
                 .apply()
     }
 
 }
-
-private class LoginProfileList(collection: Collection<LoginProfile> = listOf()) : ArrayList<LoginProfile>(collection) {}

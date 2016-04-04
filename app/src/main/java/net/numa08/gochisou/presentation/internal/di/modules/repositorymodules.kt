@@ -3,7 +3,6 @@ package net.numa08.gochisou.presentation.internal.di.modules
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
-import net.numa08.gochisou.data.entity.mapper.NavigationIdentifierMapper
 import net.numa08.gochisou.data.repositories.LoginProfileRepository
 import net.numa08.gochisou.data.repositories.LoginProfileRepositoryImpl
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
@@ -26,5 +25,5 @@ class NavigationIdentifierRepositoryModule {
 
     @Provides
     fun providesNavigationIdentifierRepository(sharedPreferences: SharedPreferences): NavigationIdentifierRepository
-            = NavigationIdentifierRepositoryImpl(sharedPreferences, NavigationIdentifierMapper().gson)
+            = NavigationIdentifierRepositoryImpl(sharedPreferences)
 }
