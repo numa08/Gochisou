@@ -19,7 +19,7 @@ import org.jetbrains.anko.find
 class InputTeamURLFragment : RxFragment(){
 
     interface PresenterProvider{
-        var inputTeamURLPresenter: InputTeamURLPresenter
+        val inputTeamURLPresenter: InputTeamURLPresenter
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {

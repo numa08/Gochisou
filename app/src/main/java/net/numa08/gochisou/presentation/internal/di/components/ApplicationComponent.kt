@@ -3,18 +3,17 @@ package net.numa08.gochisou.presentation.internal.di.components
 import android.content.Context
 import dagger.Component
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
-import net.numa08.gochisou.presentation.internal.di.PerActivity
 import net.numa08.gochisou.presentation.internal.di.modules.*
-import net.numa08.gochisou.presentation.presenter.PostListPresenter
 import net.numa08.gochisou.presentation.service.EsaAccessService
 import net.numa08.gochisou.presentation.view.activity.LoginActivity
 import net.numa08.gochisou.presentation.view.activity.MainActivity
 import net.numa08.gochisou.presentation.view.activity.PostDetailActivity
 import net.numa08.gochisou.presentation.view.activity.PostListActivity
 import net.numa08.gochisou.presentation.view.fragment.*
+import javax.inject.Singleton
 
-@PerActivity
-@Component(modules = arrayOf(ApplicationModule::class, EsaServiceModule::class, RealmConfigurationModule::class, LoginPresenterModule::class, LoginProfileRepositoryModule::class, NavigationIdentifierRepositoryModule::class))
+@Singleton
+@Component(modules = arrayOf(ApplicationModule::class, EsaServiceModule::class, RealmConfigurationModule::class, LoginProfileRepositoryModule::class, NavigationIdentifierRepositoryModule::class))
 interface ApplicationComponent {
     fun context(): Context
 
@@ -40,5 +39,5 @@ interface ApplicationComponent {
 
     fun inject(activity: PostListActivity)
 
-    fun postListPresenter(): PostListPresenter
+    fun activityComponent(): ActivityComponent
 }

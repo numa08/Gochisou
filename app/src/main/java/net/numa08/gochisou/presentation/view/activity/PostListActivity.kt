@@ -11,13 +11,11 @@ import net.numa08.gochisou.data.model.NavigationIdentifier
 import net.numa08.gochisou.data.model.Post
 import net.numa08.gochisou.data.model.Team
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
-import net.numa08.gochisou.presentation.presenter.PostListPresenter
 import net.numa08.gochisou.presentation.view.PostListView
 import net.numa08.gochisou.presentation.view.fragment.NavigationAddable
 import net.numa08.gochisou.presentation.view.fragment.PostListFragment
 import org.jetbrains.anko.support.v4.withArguments
 import org.parceler.Parcels
-import javax.inject.Inject
 
 class PostListActivity : AppCompatActivity(),
         PostListFragment.PresenterProvider,
@@ -27,8 +25,7 @@ class PostListActivity : AppCompatActivity(),
         val ARG_LOGIN_PROFILE = "${PostListActivity::class.qualifiedName}.ARG_LOGIN_PROFILE"
     }
 
-    override lateinit var postListPresenter: PostListPresenter
-        @Inject set
+    override val postListPresenter by lazy { GochisouApplication.application?.applicationComponent?.activityComponent()?.postListPresenter()!! }
 
     val loginProfile by lazy { Parcels.unwrap<LoginProfile>(intent.getParcelableExtra(ARG_LOGIN_PROFILE)) }
 

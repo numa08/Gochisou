@@ -12,8 +12,6 @@ import net.numa08.gochisou.R
 import net.numa08.gochisou.data.model.NavigationIdentifier
 import net.numa08.gochisou.data.repositories.LoginProfileRepository
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
-import net.numa08.gochisou.presentation.presenter.InputTeamURLPresenter
-import net.numa08.gochisou.presentation.presenter.InputTokenPresenter
 import net.numa08.gochisou.presentation.view.fragment.InputTeamURLFragment
 import net.numa08.gochisou.presentation.view.fragment.InputTokenFragment
 import javax.inject.Inject
@@ -35,10 +33,8 @@ class LoginActivity : AppCompatActivity(),
         @Inject set
     lateinit var navigationIdentifierRepository: NavigationIdentifierRepository
         @Inject set
-    lateinit override var inputTeamURLPresenter: InputTeamURLPresenter
-        @Inject set
-    lateinit override var inputTokenPresenter: InputTokenPresenter
-        @Inject set
+    override val inputTeamURLPresenter by lazy { GochisouApplication.application?.applicationComponent?.activityComponent()?.inputTeamURLPresenter()!! }
+    override val inputTokenPresenter by lazy { GochisouApplication.application?.applicationComponent?.activityComponent()?.inputTokenPresenter()!! }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -24,7 +24,7 @@ class InputTokenFragment: RxFragment() {
     }
 
     interface PresenterProvider {
-        var inputTokenPresenter: InputTokenPresenter
+        val inputTokenPresenter: InputTokenPresenter
     }
 
     val loginProfile by lazy { Parcels.unwrap<LoginProfile>(arguments!!.getParcelable(ARG_LOGIN_PROFILE)) }

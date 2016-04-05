@@ -14,6 +14,7 @@ import javax.inject.Singleton
 class LoginProfileRepositoryModule {
 
     @Provides
+    @Singleton
     fun providesLoginProfileRepository(sharedPreferences: SharedPreferences) : LoginProfileRepository
         = LoginProfileRepositoryImpl(sharedPreferences)
 
@@ -24,6 +25,7 @@ class LoginProfileRepositoryModule {
 class NavigationIdentifierRepositoryModule {
 
     @Provides
+    @Singleton
     fun providesNavigationIdentifierRepository(sharedPreferences: SharedPreferences): NavigationIdentifierRepository
             = NavigationIdentifierRepositoryImpl(sharedPreferences)
 }

@@ -15,7 +15,6 @@ import net.numa08.gochisou.R
 import net.numa08.gochisou.data.model.Post
 import net.numa08.gochisou.data.model.Team
 import net.numa08.gochisou.data.repositories.LoginProfileRepository
-import net.numa08.gochisou.presentation.presenter.PostListPresenter
 import net.numa08.gochisou.presentation.view.PostListView
 import net.numa08.gochisou.presentation.view.fragment.MainNavigationFragment
 import net.numa08.gochisou.presentation.view.fragment.PostListFragment
@@ -41,8 +40,7 @@ class MainActivity : AppCompatActivity(),
 
     lateinit var realmConfiguration: RealmConfiguration
         @Inject set
-    lateinit override var postListPresenter: PostListPresenter
-        @Inject set
+    override val postListPresenter by lazy { GochisouApplication.application?.applicationComponent?.activityComponent()?.postListPresenter()!! }
 
     override val tabLayout: TabLayout
         get() = tabbar
@@ -52,7 +50,6 @@ class MainActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GochisouApplication.application?.applicationComponent?.inject(this)
-        postListPresenter = GochisouApplication.application?.applicationComponent?.postListPresenter()!!
         postListPresenter.postListView = this
         setContentView(R.layout.activity_main)
         navigation_view.setNavigationItemSelectedListener(this)

@@ -4,13 +4,14 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import io.realm.RealmConfiguration
-import net.numa08.gochisou.presentation.internal.di.PerActivity
+import javax.inject.Singleton
 
 @Module
+@Singleton
 class RealmConfigurationModule {
 
     @Provides
-    @PerActivity
+    @Singleton
     fun providesRealmConfiguration(context: Context): RealmConfiguration {
         return RealmConfiguration.Builder(context.cacheDir).name("esa").deleteRealmIfMigrationNeeded().build()
     }
