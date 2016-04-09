@@ -39,5 +39,7 @@ interface ApplicationComponent {
 
     fun inject(activity: PostListActivity)
 
+    fun inject(fragment: MemberListFragment)
+
     fun activityComponent(): ActivityComponent
 }

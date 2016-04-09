@@ -1,8 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="net.numa08.gochisou">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".GochisouApplication"
         android:allowBackup="true"
@@ -11,25 +13,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <service android:name=".presentation.service.EsaAccessService"/>
+        <service android:name=".presentation.service.EsaAccessService" />
+
         <activity
             android:name=".presentation.view.activity.MainActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            >
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".presentation.view.activity.LoginActivity"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustResize"
             android:label="@string/label_login"
             android:theme="@style/AppTheme.LoginActivity"
-            />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".presentation.view.activity.PostDetailActivity"
             android:configChanges="orientation|screenSize"
@@ -42,6 +44,10 @@
             android:name=".presentation.view.activity.PostListActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/label_post_list" />
+        <activity
+            android:name=".presentation.view.activity.MemberListActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/label_member_list" />
     </application>
 
 </manifest>

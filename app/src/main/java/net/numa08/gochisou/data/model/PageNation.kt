@@ -20,4 +20,9 @@ sealed class PageNation<T> {
         @SerializedName("posts")
         override val list: List<Post>? = null
     }
+
+    class MemberPageNation : PageNation<Member>() {
+        @SerializedName("members")
+        override val list: List<Member>? = null
+    }
 }

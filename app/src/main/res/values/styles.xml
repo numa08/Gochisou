@@ -9,6 +9,8 @@
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:listPreferredItemPaddingStart">16dp</item>
+        <item name="android:listPreferredItemPaddingEnd">16dp</item>
     </style>
 
     <style name="AppTheme.LoginActivity" parent="AppTheme">

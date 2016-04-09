@@ -29,6 +29,12 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
             return i
         }
 
+        fun getMembers(context: Context, loginProfile: LoginProfile): Intent {
+            val i = Intent(context, EsaAccessService::class.java)
+            i.putExtra(EXTRA_ARG_SERVICE_ACTION, Parcels.wrap(ServiceAction.GetMembers(loginProfile)))
+            return i
+        }
+
     }
 
     lateinit var realmConfiguration: RealmConfiguration
@@ -47,6 +53,7 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
         when(action) {
             is ServiceAction.GetPosts -> getPosts(action.loginProfile)
             is ServiceAction.GetTeams -> getTeam(action.loginProfile)
+            is ServiceAction.GetMembers -> getMember(action.loginProfile)
         }
     }
 
@@ -113,10 +120,49 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
         }
     }
 
+    fun getMember(loginProfile: LoginProfile) {
+        Realm.getInstance(realmConfiguration).use { realm ->
+            val t: Team? = realm.where(Team::class.java)
+                    .equalTo("loginToken", loginProfile.token)
+                    .findFirst()
+            if (t != null) {
+                val res = tryAllCatch {
+                    esaService
+                            .members(loginProfile.tokenForHeader, t.name)
+                            .execute()
+                }
+                val right = res as? Either.Right
+                val left = res as? Either.Left
+                right?.value?.body()?.list?.let { l ->
+                    realm.executeTransaction {
+                        val ul = it.copyToRealmOrUpdate(l)
+                        ul.forEach {
+                            if (!(t.members?.contains(it) ?: false)) {
+                                t.members?.add(it)
+                            }
+                        }
+                    }
+                }
+                right?.value?.errorBody()?.let { e ->
+                    Log.e("Gochisou", "get http error body $e")
+                }
+                left?.value?.let {
+                    Log.e("Gochisou", "Failed request ", it)
+                }
+            } else {
+                getTeam(loginProfile)
+                getMember(loginProfile)
+            }
+        }
+    }
+
     sealed class ServiceAction(){
         @Parcel(Parcel.Serialization.BEAN)
         class GetPosts @ParcelConstructor constructor(@ParcelProperty("loginProfile") val loginProfile: LoginProfile) : ServiceAction()
         @Parcel(Parcel.Serialization.BEAN)
         class GetTeams @ParcelConstructor constructor(@ParcelProperty("loginProfile") val loginProfile: LoginProfile) : ServiceAction()
+
+        @Parcel(Parcel.Serialization.BEAN)
+        class GetMembers @ParcelConstructor constructor(@ParcelProperty("loginProfile") val loginProfile: LoginProfile) : ServiceAction()
     }
 }

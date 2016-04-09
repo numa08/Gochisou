@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity(),
                         }
 
                         override fun onClickUserList(header: NavigationHeader?) {
+                            startActivity(intentFor<MemberListActivity>(MemberListActivity.ARG_LOGIN_PROFILE to Parcels.wrap(p)))
                         }
 
                     }

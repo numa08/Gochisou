@@ -20,7 +20,6 @@ import net.numa08.gochisou.data.model.Team
 import net.numa08.gochisou.presentation.presenter.PostListPresenter
 import net.numa08.gochisou.presentation.service.EsaAccessService
 import net.numa08.gochisou.presentation.view.adapter.PostListAdapter
-import net.numa08.gochisou.presentation.view.adapter.ViewHolder
 import net.numa08.gochisou.presentation.widget.DividerItemDecoration
 import org.parceler.Parcels
 import javax.inject.Inject

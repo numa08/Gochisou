@@ -12,4 +12,7 @@ interface EsaService {
 
     @GET("/v1/teams/{team_name}/posts")
     fun posts(@Header("Authorization") token: String?, @Path("team_name") teamName: String?): Call<PageNation.PostPageNation>
+
+    @GET("/v1/teams/{team_name}/members")
+    fun members(@Header("Authorization") token: String?, @Path("team_name") teamName: String?): Call<PageNation.MemberPageNation>
 }

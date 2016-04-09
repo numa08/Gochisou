@@ -19,7 +19,7 @@ import net.numa08.gochisou.R
 import net.numa08.gochisou.data.model.Post
 import org.jetbrains.anko.find
 
-open class PostListAdapter(posts: RealmResults<Post>?, val picasso: Picasso) : RealmBaseRecyclerAdapter<Post, ViewHolder>(posts, true), SwipeItemMangerInterface, SwipeAdapterInterface {
+open class PostListAdapter(posts: RealmResults<Post>?, val picasso: Picasso) : RealmBaseRecyclerAdapter<Post, PostListAdapter.ViewHolder>(posts, true), SwipeItemMangerInterface, SwipeAdapterInterface {
     val itemManager = SwipeItemRecyclerMangerImpl(this)
 
     init {
@@ -85,14 +85,14 @@ open class PostListAdapter(posts: RealmResults<Post>?, val picasso: Picasso) : R
     override fun closeItem(position: Int) {
         itemManager.closeItem(position)
     }
-}
 
-class ViewHolder(val cardView: CardView) : RecyclerView.ViewHolder(cardView) {
-    val swipeLayout = cardView.find<SwipeLayout>(R.id.swipe_layout)
-    val leftContent = swipeLayout.find<View>(R.id.left_content)
-    val centerContent = swipeLayout.find<View>(R.id.center_content)
-    val rightContent = swipeLayout.find<View>(R.id.right_content)
-    val avatarImage = centerContent.find<ImageView>(R.id.image_author_avatar)
-    val category = centerContent.find<TextView>(R.id.text_category)
-    val textName = centerContent.find<TextView>(R.id.text_name)
+    class ViewHolder(val cardView: CardView) : RecyclerView.ViewHolder(cardView) {
+        val swipeLayout = cardView.find<SwipeLayout>(R.id.swipe_layout)
+        val leftContent = swipeLayout.find<View>(R.id.left_content)
+        val centerContent = swipeLayout.find<View>(R.id.center_content)
+        val rightContent = swipeLayout.find<View>(R.id.right_content)
+        val avatarImage = centerContent.find<ImageView>(R.id.image_author_avatar)
+        val category = centerContent.find<TextView>(R.id.text_category)
+        val textName = centerContent.find<TextView>(R.id.text_name)
+    }
 }
