@@ -4,7 +4,7 @@ import android.os.Build
 import net.numa08.gochisou.BuildConfig
 import net.numa08.gochisou.data.model.LoginProfile
 import net.numa08.gochisou.data.model.NavigationIdentifier
-import net.numa08.gochisou.data.testtool.rules.RoboSharedPreferencesRule
+import net.numa08.gochisou.testtools.RoboSharedPreferencesRule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

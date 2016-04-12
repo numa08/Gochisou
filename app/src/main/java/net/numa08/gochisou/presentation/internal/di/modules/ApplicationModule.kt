@@ -4,13 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
-import net.numa08.gochisou.GochisouApplication
 import org.jetbrains.anko.defaultSharedPreferences
 import javax.inject.Singleton
 
 @Module
 @Singleton
-class ApplicationModule(private val application: GochisouApplication) {
+class ApplicationModule(val application: Context) {
 
     @Provides
     @Singleton

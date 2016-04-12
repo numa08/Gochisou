@@ -8,31 +8,31 @@ import javax.inject.Singleton
 
 @Module
 @Singleton
-class LoginProfileRepositoryModule {
+class LoginProfileRepositoryModule(val sharedPreferences: SharedPreferences) {
 
     @Provides
     @Singleton
-    fun providesLoginProfileRepository(sharedPreferences: SharedPreferences) : LoginProfileRepository
+    fun providesLoginProfileRepository(): LoginProfileRepository
         = LoginProfileRepositoryImpl(sharedPreferences)
 
 }
 
 @Module
 @Singleton
-class NavigationIdentifierRepositoryModule {
+class NavigationIdentifierRepositoryModule(val sharedPreferences: SharedPreferences) {
 
     @Provides
     @Singleton
-    fun providesNavigationIdentifierRepository(sharedPreferences: SharedPreferences): NavigationIdentifierRepository
+    fun providesNavigationIdentifierRepository(): NavigationIdentifierRepository
             = NavigationIdentifierRepositoryImpl(sharedPreferences)
 }
 
 @Module
 @Singleton
-class TeamRepositoryModule {
+open class TeamRepositoryModule {
 
     @Provides
     @Singleton
-    fun providesTeamRepository(): TeamRepository = TeamRepositoryImpl()
+    open fun providesTeamRepository(): TeamRepository = TeamRepositoryImpl()
 
 }

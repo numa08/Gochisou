@@ -35,7 +35,7 @@ class MainNavigationAdapter(fragmentManager: FragmentManager, val navigationIden
                     }
                     is NavigationIdentifier.PostDetailNavigationIdentifier -> {
                         PostDetailFragment().withArguments(
-                                "loginProfile" to Parcels.wrap(it.loginProfile),
+                                ArgLoginProfile.ARG_LOGIN_PROFILE to Parcels.wrap(it.loginProfile),
                                 "fullName" to it.fullName
                         )
                     }
