@@ -82,7 +82,7 @@ open class PostListFragment : Fragment() {
                 ?: Log.d("Gochisou", "on click post at $view 's ${post.fullName}")
     }
 
-    private fun loadPosts() : RealmResults<Post>?  {
+    open fun loadPosts(): RealmResults<Post>? {
         val team: Team? = realm.where(Team::class.java)
             .equalTo("loginToken", loginProfile.token)
             .findFirst()

@@ -30,7 +30,7 @@ class MemberListFragment : Fragment() {
     lateinit var realmConfiguration: RealmConfiguration
         @Inject set
     val realm by lazy { Realm.getInstance(realmConfiguration) }
-    val loginProfile by lazy { Parcels.unwrap<LoginProfile>(arguments!!.getParcelable(ARG_LOGIN_PROFILE)) }
+    val loginProfile by lazy { Parcels.unwrap<LoginProfile>(arguments!!.getParcelable(ARG_LOGIN_PROFILE))!! }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +48,11 @@ class MemberListFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler.addItemDecoration(DividerItemDecoration(view?.context, DividerItemDecoration.VERTICAL_LIST))
-        val adapter = MemberListAdapter(loadMembers(), Picasso.with(view?.context))
+        val adapter = object : MemberListAdapter(loadMembers(), Picasso.with(view?.context)) {
+            override fun onClickItem(member: Member?) {
+                (activity as? Callback)?.onClickMember(member)
+            }
+        }
         recycler.adapter = adapter
     }
 
@@ -62,5 +66,9 @@ class MemberListFragment : Fragment() {
                 .equalTo("loginToken", loginProfile.token)
                 .findFirst()
         return team?.members?.where()?.findAll()
+    }
+
+    interface Callback {
+        fun onClickMember(member: Member?)
     }
 }

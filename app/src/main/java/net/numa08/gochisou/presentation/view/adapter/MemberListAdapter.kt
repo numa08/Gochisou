@@ -5,7 +5,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,7 @@ import net.numa08.gochisou.data.model.Member
 import org.jetbrains.anko.find
 import org.jetbrains.anko.textColor
 
-class MemberListAdapter(members: RealmResults<Member>?, val picasso: Picasso) : RealmBaseRecyclerAdapter<Member, MemberListAdapter.ViewHolder>(members, true) {
+open class MemberListAdapter(members: RealmResults<Member>?, val picasso: Picasso) : RealmBaseRecyclerAdapter<Member, MemberListAdapter.ViewHolder>(members, true) {
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         holder?.text?.let {
@@ -28,19 +27,17 @@ class MemberListAdapter(members: RealmResults<Member>?, val picasso: Picasso) : 
             picasso.load(realmResults?.get(position)?.icon)
                     .into(object : Target {
                         override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-                            Log.d("Gochisou", "onPrepareLoad")
                         }
 
                         override fun onBitmapFailed(errorDrawable: Drawable?) {
-                            Log.e("Gochisou", "onBitampFailed")
                         }
 
                         override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                            Log.d("Gochisou", "onBitampLoaded")
                             it.setCompoundDrawablesRelativeWithIntrinsicBounds(BitmapDrawable(it.context.resources, bitmap), null, null, null)
                         }
                     })
         }
+        holder?.view?.setOnClickListener { onClickItem(realmResults?.get(position)) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder? {
@@ -49,6 +46,9 @@ class MemberListAdapter(members: RealmResults<Member>?, val picasso: Picasso) : 
     }
 
     override fun getItemCount(): Int = realmResults?.size ?: 0
+
+    open fun onClickItem(member: Member?) {
+    }
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val text = view.find<TextView>(android.R.id.text1)

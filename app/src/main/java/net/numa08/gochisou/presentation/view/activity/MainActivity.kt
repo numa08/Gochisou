@@ -84,7 +84,8 @@ class MainActivity : AppCompatActivity(),
 
             supportFragmentManager
             .beginTransaction()
-            .replace(R.id.content, MainNavigationFragment(), BACK_STACK)
+                    .replace(R.id.content, MainNavigationFragment())
+                    .addToBackStack(BACK_STACK)
             .commit()
         }
     }

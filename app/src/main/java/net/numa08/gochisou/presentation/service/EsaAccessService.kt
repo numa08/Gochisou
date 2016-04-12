@@ -23,9 +23,9 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
     companion object {
         val EXTRA_ARG_SERVICE_ACTION = "service_action"
 
-        fun getPosts(context: Context, loginProfile: LoginProfile) : Intent {
+        fun getPosts(context: Context, loginProfile: LoginProfile, query: String? = null): Intent {
             val i = Intent(context, EsaAccessService::class.java)
-            i.putExtra(EXTRA_ARG_SERVICE_ACTION, Parcels.wrap(ServiceAction.GetPosts(loginProfile)))
+            i.putExtra(EXTRA_ARG_SERVICE_ACTION, Parcels.wrap(ServiceAction.GetPosts(loginProfile, query)))
             return i
         }
 
@@ -51,13 +51,13 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
     override fun onHandleIntent(i: Intent?) {
         val action = Parcels.unwrap<ServiceAction>(i?.getParcelableExtra(EXTRA_ARG_SERVICE_ACTION))
         when(action) {
-            is ServiceAction.GetPosts -> getPosts(action.loginProfile)
+            is ServiceAction.GetPosts -> getPosts(action.loginProfile, action.query)
             is ServiceAction.GetTeams -> getTeam(action.loginProfile)
             is ServiceAction.GetMembers -> getMember(action.loginProfile)
         }
     }
 
-    fun getPosts(loginProfile: LoginProfile) {
+    fun getPosts(loginProfile: LoginProfile, query: String? = null) {
         Realm.getInstance(realmConfiguration)
                 .use { realm ->
                     val t: Team? = realm.where(Team::class.java)
@@ -66,7 +66,7 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
                     if(t != null) {
                         val res = tryAllCatch {
                             esaService
-                            .posts(loginProfile.tokenForHeader, t.name)
+                                    .posts(loginProfile.tokenForHeader, t.name, query)
                             .execute()
                         }
                         val right = res as? Either.Right
@@ -158,7 +158,7 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
 
     sealed class ServiceAction(){
         @Parcel(Parcel.Serialization.BEAN)
-        class GetPosts @ParcelConstructor constructor(@ParcelProperty("loginProfile") val loginProfile: LoginProfile) : ServiceAction()
+        class GetPosts @ParcelConstructor constructor(@ParcelProperty("loginProfile") val loginProfile: LoginProfile, @ParcelProperty("query") val query: String? = "") : ServiceAction()
         @Parcel(Parcel.Serialization.BEAN)
         class GetTeams @ParcelConstructor constructor(@ParcelProperty("loginProfile") val loginProfile: LoginProfile) : ServiceAction()
 
