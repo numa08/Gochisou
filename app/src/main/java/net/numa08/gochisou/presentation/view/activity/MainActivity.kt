@@ -71,11 +71,11 @@ class MainActivity : AppCompatActivity(),
                     header.team = team
                     header.listener = object : NavigationHeader.ActionListener {
                         override fun onClickPostList(header: NavigationHeader?) {
-                            startActivity(intentFor<PostListActivity>(PostListActivity.ARG_LOGIN_PROFILE to Parcels.wrap(p)))
+                            startActivity(intentFor<PostListActivity>(IntentLoginProfile.ARG_LOGIN_PROFILE to Parcels.wrap(p)))
                         }
 
                         override fun onClickUserList(header: NavigationHeader?) {
-                            startActivity(intentFor<MemberListActivity>(MemberListActivity.ARG_LOGIN_PROFILE to Parcels.wrap(p)))
+                            startActivity(intentFor<MemberListActivity>(IntentLoginProfile.ARG_LOGIN_PROFILE to Parcels.wrap(p)))
                         }
 
                     }

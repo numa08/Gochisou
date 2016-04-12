@@ -14,32 +14,22 @@ import io.realm.Sort
 import kotlinx.android.synthetic.main.fragment_post_list.*
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
-import net.numa08.gochisou.data.model.LoginProfile
 import net.numa08.gochisou.data.model.Post
 import net.numa08.gochisou.data.model.Team
 import net.numa08.gochisou.presentation.presenter.PostListPresenter
 import net.numa08.gochisou.presentation.service.EsaAccessService
 import net.numa08.gochisou.presentation.view.adapter.PostListAdapter
 import net.numa08.gochisou.presentation.widget.DividerItemDecoration
-import org.parceler.Parcels
 import javax.inject.Inject
 
-open class PostListFragment : Fragment() {
-
-    companion object {
-        val ARG_LOGIN_PROFILE = "${PostListFragment::class.simpleName}.ARG_LOGIN_PROFILE"
-    }
+open class PostListFragment : Fragment(), ArgLoginProfile {
 
     lateinit var realmConfiguration: RealmConfiguration
         @Inject set
 
 
-    val loginProfile by lazy { Parcels.unwrap<LoginProfile>(arguments!!.getParcelable(ARG_LOGIN_PROFILE)) }
     lateinit var listAdapter : PostListAdapter
     val realm by lazy { Realm.getInstance(realmConfiguration) }
-    val realmHandler by lazy {{
-        listAdapter.updateRealmResults(loadPosts())
-    }}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +41,6 @@ open class PostListFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val posts = loadPosts()
         val adapter = object : PostListAdapter(loadPosts(), Picasso.with(view?.context)) {
             override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
                 super.onBindViewHolder(holder, position)
@@ -61,19 +50,15 @@ open class PostListFragment : Fragment() {
         listAdapter = adapter
         recycler.adapter = adapter
         recycler.addItemDecoration(DividerItemDecoration(recycler.context, DividerItemDecoration.VERTICAL_LIST))
-        if(posts == null) {
-            realm.addChangeListener(realmHandler)
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        EsaAccessService.getPosts(context, loginProfile).let { context.startService(it) }
+        EsaAccessService.getPosts(context, loginProfile()).let { context.startService(it) }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        realm.removeChangeListener(realmHandler)
         realm.close()
     }
 
@@ -82,11 +67,8 @@ open class PostListFragment : Fragment() {
                 ?: Log.d("Gochisou", "on click post at $view 's ${post.fullName}")
     }
 
-    open fun loadPosts(): RealmResults<Post>? {
-        val team: Team? = realm.where(Team::class.java)
-            .equalTo("loginToken", loginProfile.token)
-            .findFirst()
-        return team?.posts?.where()?.findAllSorted("updatedAt", Sort.DESCENDING)
+    fun loadPosts(): RealmResults<Post>? {
+        return Team.findByLoginProfile(realm, loginProfile())!!.posts?.where()?.findAllSorted("updatedAt", Sort.DESCENDING)
     }
 
     interface PresenterProvider {

@@ -1,6 +1,7 @@
 package net.numa08.gochisou.data.model
 
 import com.google.gson.annotations.Expose
+import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
@@ -18,4 +19,11 @@ open class Team(
         var posts: RealmList<Post>? = null,
         @Expose
         var members: RealmList<Member>? = null
-) : RealmObject() {}
+) : RealmObject() {
+    companion object {
+        fun findByLoginProfile(realm: Realm, loginProfile: LoginProfile): Team? =
+                realm.where(Team::class.java)
+                        .equalTo("loginToken", loginProfile.token)
+                        .findFirst()
+    }
+}

@@ -10,6 +10,7 @@ import android.widget.TextView
 import net.numa08.gochisou.R
 import net.numa08.gochisou.data.model.NavigationIdentifier
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
+import net.numa08.gochisou.presentation.view.fragment.ArgLoginProfile
 import net.numa08.gochisou.presentation.view.fragment.PostDetailFragment
 import net.numa08.gochisou.presentation.view.fragment.PostListFragment
 import net.numa08.gochisou.presentation.widget.CustomTabLayout
@@ -30,7 +31,7 @@ class MainNavigationAdapter(fragmentManager: FragmentManager, val navigationIden
                 when (it) {
                     is NavigationIdentifier.PostNavigationIdentifier -> {
                         PostListFragment().withArguments(
-                                PostListFragment.ARG_LOGIN_PROFILE to Parcels.wrap(it.loginProfile))
+                                ArgLoginProfile.ARG_LOGIN_PROFILE to Parcels.wrap(it.loginProfile))
                     }
                     is NavigationIdentifier.PostDetailNavigationIdentifier -> {
                         PostDetailFragment().withArguments(

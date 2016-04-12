@@ -9,5 +9,5 @@ import org.parceler.Parcels
 fun Activity.showPostDetail(fragment: PostListFragment, post: Post) {
     startActivity(intentFor<PostDetailActivity>(
             "fullName" to (post.fullName ?: ""),
-            "loginProfile" to Parcels.wrap(fragment.loginProfile)))
+            IntentLoginProfile.ARG_LOGIN_PROFILE to Parcels.wrap(fragment.loginProfile())))
 }

@@ -8,20 +8,19 @@ import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.activity_main.*
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
-import net.numa08.gochisou.data.model.LoginProfile
 import net.numa08.gochisou.data.model.NavigationIdentifier
 import net.numa08.gochisou.data.model.Post
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
+import net.numa08.gochisou.presentation.view.fragment.ArgLoginProfile
 import net.numa08.gochisou.presentation.view.fragment.NavigationAddable
 import net.numa08.gochisou.presentation.view.fragment.PostDetailFragment
 import org.jetbrains.anko.support.v4.withArguments
 import org.parceler.Parcels
 import javax.inject.Inject
 
-class PostDetailActivity() : AppCompatActivity() {
+class PostDetailActivity() : AppCompatActivity(), IntentLoginProfile {
 
     val fullName by lazy { intent!!.getStringExtra("fullName") }
-    val loginProfile by lazy { Parcels.unwrap<LoginProfile>(intent!!.getParcelableExtra("loginProfile")) }
 
     lateinit var realmConfiguration: RealmConfiguration
         @Inject set
@@ -38,7 +37,7 @@ class PostDetailActivity() : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.title = post.name
         supportActionBar?.subtitle = post.category
-        val fragment = Fragment().withArguments("fullName" to fullName, "loginProfile" to Parcels.wrap(loginProfile))
+        val fragment = Fragment().withArguments("fullName" to fullName, ArgLoginProfile.ARG_LOGIN_PROFILE to Parcels.wrap(loginProfile()))
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.content, fragment)
@@ -50,7 +49,7 @@ class PostDetailActivity() : AppCompatActivity() {
         realm.close()
     }
 
-    private class Fragment : PostDetailFragment(), NavigationAddable {
+    private class Fragment : PostDetailFragment(), NavigationAddable, ArgLoginProfile {
         override var navigationIdentifierRepository: NavigationIdentifierRepository
                 = GochisouApplication.application?.applicationComponent?.navigationIdentifierRepository()!!
 
@@ -59,7 +58,7 @@ class PostDetailActivity() : AppCompatActivity() {
                     NavigationIdentifier.PostDetailNavigationIdentifier(
                             name = post.name!!,
                             avatar = post.createdBy?.icon!!,
-                            loginProfile = loginProfile,
+                            loginProfile = loginProfile(),
                             fullName = post.fullName ?: "")
                 }
 

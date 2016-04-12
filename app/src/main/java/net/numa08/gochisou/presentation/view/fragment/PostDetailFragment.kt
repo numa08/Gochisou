@@ -10,9 +10,7 @@ import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.fragment_post_detail.*
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
-import net.numa08.gochisou.data.model.LoginProfile
 import net.numa08.gochisou.data.model.Post
-import org.parceler.Parcels
 import javax.inject.Inject
 
 open class PostDetailFragment() : Fragment() {
@@ -23,7 +21,6 @@ open class PostDetailFragment() : Fragment() {
     lateinit var post: Post
 
     val fullName by lazy { arguments!!.getString("fullName") }
-    val loginProfile by lazy { Parcels.unwrap<LoginProfile>(arguments!!.getParcelable("loginProfile")) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GochisouApplication.application?.applicationComponent?.inject(this)
