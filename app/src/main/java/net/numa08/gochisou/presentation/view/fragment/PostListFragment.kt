@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_post_list.*
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
 import net.numa08.gochisou.data.model.Post
-import net.numa08.gochisou.data.model.Team
+import net.numa08.gochisou.data.repositories.TeamRepository
 import net.numa08.gochisou.presentation.presenter.PostListPresenter
 import net.numa08.gochisou.presentation.service.EsaAccessService
 import net.numa08.gochisou.presentation.view.adapter.PostListAdapter
@@ -25,6 +25,8 @@ import javax.inject.Inject
 open class PostListFragment : Fragment(), ArgLoginProfile {
 
     lateinit var realmConfiguration: RealmConfiguration
+        @Inject set
+    lateinit var teamRepository: TeamRepository
         @Inject set
 
 
@@ -68,7 +70,7 @@ open class PostListFragment : Fragment(), ArgLoginProfile {
     }
 
     fun loadPosts(): RealmResults<Post>? {
-        return Team.findByLoginProfile(realm, loginProfile())!!.posts?.where()?.findAllSorted("updatedAt", Sort.DESCENDING)
+        return teamRepository.findByLoginProfile(realm, loginProfile())!!.posts?.where()?.findAllSorted("updatedAt", Sort.DESCENDING)
     }
 
     interface PresenterProvider {
