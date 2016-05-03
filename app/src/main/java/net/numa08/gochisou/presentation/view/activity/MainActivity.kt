@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(),
 
             loginProfileRepository.first().let { p ->
                 val team : Team? = realm.where(Team::class.java)
-                        .equalTo("loginToken", p.token)
+                        .equalTo("loginToken", p.token.accessToken)
                     .findFirst()
                 val header = navigation_view.getHeaderView(0)?.navigation_header
                 if (header != null && team != null) {

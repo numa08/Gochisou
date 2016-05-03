@@ -7,6 +7,6 @@ import net.numa08.gochisou.data.model.Team
 class TeamRepositoryImpl : TeamRepository {
     override fun findByLoginProfile(realm: Realm, loginProfile: LoginProfile): Team? =
             realm.where(Team::class.java)
-                    .equalTo("loginToken", loginProfile.token)
+                    .equalTo("loginToken", loginProfile.token.accessToken)
                     .findFirst()
 }

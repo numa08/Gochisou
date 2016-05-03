@@ -61,7 +61,7 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
         Realm.getInstance(realmConfiguration)
                 .use { realm ->
                     val t: Team? = realm.where(Team::class.java)
-                            .equalTo("loginToken", loginProfile.token)
+                            .equalTo("loginToken", loginProfile.token.accessToken)
                             .findFirst()
                     if(t != null) {
                         val res = tryAllCatch {
@@ -105,7 +105,7 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
         when(result) {
             is Either.Right -> {
                 if(result.value.body() != null) {
-                    val list = result.value.body().list?.map{ it.loginToken = loginProfile.token; it }
+                    val list = result.value.body().list?.map { it.loginToken = loginProfile.token.accessToken; it }
                     Realm.getInstance(realmConfiguration).use { re ->
                         re.executeTransaction { it.copyToRealmOrUpdate(list) }
                     }
@@ -123,7 +123,7 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
     fun getMember(loginProfile: LoginProfile) {
         Realm.getInstance(realmConfiguration).use { realm ->
             val t: Team? = realm.where(Team::class.java)
-                    .equalTo("loginToken", loginProfile.token)
+                    .equalTo("loginToken", loginProfile.token.accessToken)
                     .findFirst()
             if (t != null) {
                 val res = tryAllCatch {

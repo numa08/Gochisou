@@ -2,7 +2,6 @@ package net.numa08.gochisou.presentation.view.fragment
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,13 +40,13 @@ class InputTokenFragment: RxFragment() {
         .compose(bindToLifecycle<Unit>())
                 .subscribe { browse("https://$teamURL.esa.io/user/tokens") }
 
-        button_login
-        .clicks()
-        .compose(bindToLifecycle<Unit>())
-                .subscribe({
-                    (activity as Callback).onClickLogin(this, LoginProfile(teamURL, edit_token.text.toString()))
-                }, {
-                    Log.e("Gochisou", "throw error on click login", it)
-                })
+//        button_login
+//        .clicks()
+//        .compose(bindToLifecycle<Unit>())
+//                .subscribe({
+//                    (activity as Callback).onClickLogin(this, LoginProfile(teamURL, edit_token.text.toString()))
+//                }, {
+//                    Log.e("Gochisou", "throw error on click login", it)
+//                })
     }
 }

@@ -2,8 +2,10 @@ package net.numa08.gochisou.data.repositories
 
 import android.os.Build
 import net.numa08.gochisou.BuildConfig
+import net.numa08.gochisou.data.model.Client
 import net.numa08.gochisou.data.model.LoginProfile
 import net.numa08.gochisou.data.model.NavigationIdentifier
+import net.numa08.gochisou.data.model.Token
 import net.numa08.gochisou.testtools.RoboSharedPreferencesRule
 import org.junit.Before
 import org.junit.Rule
@@ -33,14 +35,14 @@ class NavigationIdentifierRepositoryImplTest {
 
     @Test
     fun addRepository() {
-        val identifier = NavigationIdentifier.PostNavigationIdentifier("name", "avatar", LoginProfile("team", "token"))
+        val identifier = NavigationIdentifier.PostNavigationIdentifier("name", "avatar", LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L)))
         repository.add(identifier)
         assert(repository[0] == identifier)
     }
 
     @Test
     fun restoreFromSharedPreferences() {
-        val identifier = NavigationIdentifier.PostNavigationIdentifier("name", "avatar", LoginProfile("team", "token"))
+        val identifier = NavigationIdentifier.PostNavigationIdentifier("name", "avatar", LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L)))
         repository.add(identifier)
         val newRepository = NavigationIdentifierRepositoryImpl(preferenceRule.sharedPreferences)
         assert(newRepository[0] == identifier)
@@ -48,11 +50,11 @@ class NavigationIdentifierRepositoryImplTest {
 
     @Test
     fun moveNavigationIdentifier() {
-        val id1 = NavigationIdentifier.PostNavigationIdentifier("id1", "avatar", LoginProfile("team", "token"))
-        val id2 = NavigationIdentifier.PostNavigationIdentifier("id2", "avatar", LoginProfile("team", "token"))
-        val id3 = NavigationIdentifier.PostNavigationIdentifier("id3", "avatar", LoginProfile("team", "token"))
-        val id4 = NavigationIdentifier.PostNavigationIdentifier("id4", "avatar", LoginProfile("team", "token"))
-        val id5 = NavigationIdentifier.PostNavigationIdentifier("id5", "avatar", LoginProfile("team", "token"))
+        val id1 = NavigationIdentifier.PostNavigationIdentifier("id1", "avatar", LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L)))
+        val id2 = NavigationIdentifier.PostNavigationIdentifier("id2", "avatar", LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L)))
+        val id3 = NavigationIdentifier.PostNavigationIdentifier("id3", "avatar", LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L)))
+        val id4 = NavigationIdentifier.PostNavigationIdentifier("id4", "avatar", LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L)))
+        val id5 = NavigationIdentifier.PostNavigationIdentifier("id5", "avatar", LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L)))
         repository.addAll(listOf(id1, id2, id3, id4, id5))
         repository.move(1, 3)
         assert(repository.toList() == listOf(id1, id3, id4, id2, id5))

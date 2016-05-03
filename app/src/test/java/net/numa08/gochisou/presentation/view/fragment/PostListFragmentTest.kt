@@ -8,9 +8,7 @@ import io.realm.RealmResults
 import io.realm.internal.RealmCore
 import net.numa08.gochisou.BuildConfig
 import net.numa08.gochisou.GochisouApplication
-import net.numa08.gochisou.data.model.LoginProfile
-import net.numa08.gochisou.data.model.NavigationIdentifier
-import net.numa08.gochisou.data.model.Team
+import net.numa08.gochisou.data.model.*
 import net.numa08.gochisou.data.repositories.TeamRepository
 import net.numa08.gochisou.presentation.internal.di.components.DaggerApplicationComponent
 import net.numa08.gochisou.presentation.internal.di.modules.ApplicationModule
@@ -90,7 +88,7 @@ class PostListFragmentTest {
 
     @Test
     fun should_show_add_navigation_identifier_button() {
-        val loginProfile = LoginProfile("tet", "token")
+        val loginProfile = LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
         val fragment = PostListFragment().withArguments(ArgLoginProfile.ARG_LOGIN_PROFILE to Parcels.wrap(loginProfile))
         SupportFragmentTestUtil.startVisibleFragment(fragment)
 
@@ -100,7 +98,7 @@ class PostListFragmentTest {
 
     @Test
     fun get_navigation_identifier() {
-        val loginProfile = LoginProfile("tet", "token")
+        val loginProfile = LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
         val fragment = PostListFragment().withArguments(ArgLoginProfile.ARG_LOGIN_PROFILE to Parcels.wrap(loginProfile))
         SupportFragmentTestUtil.startVisibleFragment(fragment)
 
@@ -115,7 +113,7 @@ class PostListFragmentTest {
 
     @Test
     fun should_not_show_navigation_identifier_button() {
-        val loginProfile = LoginProfile("tet", "token")
+        val loginProfile = LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
         val repository = GochisouApplication.application?.applicationComponent?.navigationIdentifierRepository()
         repository?.add(NavigationIdentifier.PostNavigationIdentifier(
                 name = "name",

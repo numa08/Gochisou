@@ -63,7 +63,7 @@ class MemberListFragment : Fragment() {
 
     fun loadMembers(): RealmResults<Member>? {
         val team: Team? = realm.where(Team::class.java)
-                .equalTo("loginToken", loginProfile.token)
+                .equalTo("loginToken", loginProfile.token.accessToken)
                 .findFirst()
         return team?.members?.where()?.findAll()
     }

@@ -78,7 +78,7 @@ class LoginActivity : AppCompatActivity(),
         profileRepository.add(loginProfile)
         val teams = team
                 .list
-                ?.map { it.loginToken = loginProfile.token; it }
+                ?.map { it.loginToken = loginProfile.token.accessToken; it }
                 ?.map { navigationIdentifierRepository.add(NavigationIdentifier.PostNavigationIdentifier(it.name ?: "", it.icon ?: "", loginProfile)); it }
 
         Realm.getInstance(realmConfiguration)?.use {
