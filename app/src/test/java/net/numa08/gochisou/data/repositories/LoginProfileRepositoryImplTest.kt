@@ -34,14 +34,14 @@ class LoginProfileRepositoryImplTest {
 
     @Test
     fun addRepository() {
-        val profile = LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
+        val profile = LoginProfile("teamName", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
         repository.add(profile)
         assert(repository[0] == profile)
     }
 
     @Test
     fun restoreFromSharedPreferences() {
-        val profile = LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
+        val profile = LoginProfile("teamName", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
         repository.add(profile)
         val newRepository = LoginProfileRepositoryImpl(repository.sharedPreferences)
         assert(newRepository[0] == profile)
@@ -49,7 +49,7 @@ class LoginProfileRepositoryImplTest {
 
     @Test
     fun findLoginProfileI() {
-        val profile = LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
+        val profile = LoginProfile("teamName", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
         repository.add(profile)
         val found = repository.find("accessToken")
         assert(found!! == profile)

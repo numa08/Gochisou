@@ -7,8 +7,8 @@ import org.parceler.ParcelProperty
 @Parcel(Parcel.Serialization.BEAN)
 data class LoginProfile
 @ParcelConstructor
-constructor(@ParcelProperty("teamURL")
-            val teamURL: String,
+constructor(@ParcelProperty("teamName")
+            val teamName: String,
             @ParcelProperty("client")
             val client: Client,
             @ParcelProperty("token")

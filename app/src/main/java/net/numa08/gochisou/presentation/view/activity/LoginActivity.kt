@@ -17,14 +17,14 @@ import net.numa08.gochisou.data.repositories.LoginProfileRepository
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
 import net.numa08.gochisou.data.service.AuthorizeURLGenerator
 import net.numa08.gochisou.presentation.presenter.LoginPresenter
-import net.numa08.gochisou.presentation.view.fragment.InputTeamURLFragment
+import net.numa08.gochisou.presentation.view.fragment.InputTeamNameFragment
 import net.numa08.gochisou.presentation.view.fragment.InputTokenFragment
 import org.jetbrains.anko.browse
 import org.jetbrains.anko.support.v4.withArguments
 import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity(),
-        InputTeamURLFragment.Callback,
+        InputTeamNameFragment.Callback,
         InputTokenFragment.Callback,
         LoginPresenter.Callback {
 
@@ -55,7 +55,7 @@ class LoginActivity : AppCompatActivity(),
         setContentView(R.layout.activity_login)
         supportFragmentManager
         .beginTransaction()
-        .add(R.id.content, InputTeamURLFragment(), BACK_STACK)
+                .add(R.id.content, InputTeamNameFragment(), BACK_STACK)
         .commit()
     }
 
@@ -66,8 +66,8 @@ class LoginActivity : AppCompatActivity(),
         }
     }
 
-    override fun onClickNext(fragment: InputTeamURLFragment, teamURL: String) {
-        val nextFragment = InputTokenFragment().withArguments(InputTokenFragment.ARG_TEAM_URL to teamURL)
+    override fun onClickNext(fragment: InputTeamNameFragment, teamName: String) {
+        val nextFragment = InputTokenFragment().withArguments(InputTokenFragment.ARG_TEAM_URL to teamName)
         supportFragmentManager
                 ?.beginTransaction()
                 ?.replace(R.id.content, nextFragment, LoginActivity.BACK_STACK)
@@ -75,7 +75,7 @@ class LoginActivity : AppCompatActivity(),
                 ?.commit()
     }
 
-    override fun onClickLogin(fragment: InputTokenFragment, teamURL: String, client: Client, redirectURL: String) {
+    override fun onClickLogin(fragment: InputTokenFragment, teamName: String, client: Client, redirectURL: String) {
         val url = urlGenerator.generateAuthorizeURL(client.id, redirectURL)
         browse(url)
     }

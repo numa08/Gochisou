@@ -88,7 +88,7 @@ class PostListFragmentTest {
 
     @Test
     fun should_show_add_navigation_identifier_button() {
-        val loginProfile = LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
+        val loginProfile = LoginProfile("teamName", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
         val fragment = PostListFragment().withArguments(ArgLoginProfile.ARG_LOGIN_PROFILE to Parcels.wrap(loginProfile))
         SupportFragmentTestUtil.startVisibleFragment(fragment)
 
@@ -98,7 +98,7 @@ class PostListFragmentTest {
 
     @Test
     fun get_navigation_identifier() {
-        val loginProfile = LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
+        val loginProfile = LoginProfile("teamName", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
         val fragment = PostListFragment().withArguments(ArgLoginProfile.ARG_LOGIN_PROFILE to Parcels.wrap(loginProfile))
         SupportFragmentTestUtil.startVisibleFragment(fragment)
 
@@ -113,7 +113,7 @@ class PostListFragmentTest {
 
     @Test
     fun should_not_show_navigation_identifier_button() {
-        val loginProfile = LoginProfile("teamURL", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
+        val loginProfile = LoginProfile("teamName", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
         val repository = GochisouApplication.application?.applicationComponent?.navigationIdentifierRepository()
         repository?.add(NavigationIdentifier.PostNavigationIdentifier(
                 name = "name",

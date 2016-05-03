@@ -9,17 +9,17 @@ import android.view.ViewGroup
 import com.jakewharton.rxbinding.view.clicks
 import com.jakewharton.rxbinding.widget.textChanges
 import com.trello.rxlifecycle.components.support.RxFragment
-import kotlinx.android.synthetic.main.fragment_input_team_url.*
+import kotlinx.android.synthetic.main.fragment_input_team_name.*
 import net.numa08.gochisou.R
 
-class InputTeamURLFragment : RxFragment(){
+class InputTeamNameFragment : RxFragment() {
 
     interface Callback {
-        fun onClickNext(fragment: InputTeamURLFragment, teamURL: String)
+        fun onClickNext(fragment: InputTeamNameFragment, teamName: String)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_input_team_url, container, false)
+        return inflater?.inflate(R.layout.fragment_input_team_name, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {

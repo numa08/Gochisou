@@ -20,10 +20,10 @@ class InputTokenFragment: RxFragment() {
     }
 
     interface Callback {
-        fun onClickLogin(fragment: InputTokenFragment, teamURL: String, client: Client, redirectURL: String)
+        fun onClickLogin(fragment: InputTokenFragment, teamName: String, client: Client, redirectURL: String)
     }
 
-    val teamURL by lazy { arguments!!.getString(ARG_TEAM_URL) }
+    val teamName by lazy { arguments!!.getString(ARG_TEAM_URL) }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_input_token, container, false)
@@ -54,13 +54,13 @@ class InputTokenFragment: RxFragment() {
         button_get_token
         .clicks()
         .compose(bindToLifecycle<Unit>())
-                .subscribe { browse("https://$teamURL.esa.io/user/applications") }
+                .subscribe { browse("https://$teamName.esa.io/user/applications") }
 
         button_login
                 .clicks()
                 .compose(bindToLifecycle<Unit>())
                 .subscribe({
-                    (activity as Callback).onClickLogin(this, teamURL, Client(edit_client_id.text.toString(), edit_client_secret.text.toString()), edit_redirect_url.text.toString())
+                    (activity as Callback).onClickLogin(this, teamName, Client(edit_client_id.text.toString(), edit_client_secret.text.toString()), edit_redirect_url.text.toString())
                 }, {
                     Log.e("Gochisou", "throw error on click login", it)
                 })
