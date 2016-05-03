@@ -10,7 +10,7 @@ import com.jakewharton.rxbinding.widget.textChanges
 import com.trello.rxlifecycle.components.support.RxFragment
 import kotlinx.android.synthetic.main.fragment_input_token.*
 import net.numa08.gochisou.R
-import net.numa08.gochisou.data.model.LoginProfile
+import net.numa08.gochisou.data.model.Client
 import org.jetbrains.anko.support.v4.browse
 
 class InputTokenFragment: RxFragment() {
@@ -19,7 +19,7 @@ class InputTokenFragment: RxFragment() {
     }
 
     interface Callback {
-        fun onClickLogin(fragment: InputTokenFragment, loginProfile: LoginProfile)
+        fun onClickLogin(fragment: InputTokenFragment, teamURL: String, client: Client, redirectURL: String)
     }
 
     val teamURL by lazy { arguments!!.getString(ARG_TEAM_URL) }
@@ -30,15 +30,30 @@ class InputTokenFragment: RxFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        edit_token
+        val changeLoginButtonAvailability = {
+            button_login.isEnabled = !TextUtils.isEmpty(edit_client_id.text)
+                    && !TextUtils.isEmpty(edit_client_secret.text)
+                    && !TextUtils.isEmpty(edit_redirect_url.text)
+        }
+        edit_client_secret
         .textChanges()
         .compose(bindToLifecycle<CharSequence>())
-                .subscribe { button_login.isEnabled = !TextUtils.isEmpty(edit_token.text) }
+                .subscribe { changeLoginButtonAvailability() }
+
+        edit_client_id
+                .textChanges()
+                .compose(bindToLifecycle<CharSequence>())
+                .subscribe { changeLoginButtonAvailability() }
+
+        edit_redirect_url
+                .textChanges()
+                .compose(bindToLifecycle<CharSequence>())
+                .subscribe { changeLoginButtonAvailability() }
 
         button_get_token
         .clicks()
         .compose(bindToLifecycle<Unit>())
-                .subscribe { browse("https://$teamURL.esa.io/user/tokens") }
+                .subscribe { browse("https://$teamURL.esa.io/user/applications") }
 
 //        button_login
 //        .clicks()

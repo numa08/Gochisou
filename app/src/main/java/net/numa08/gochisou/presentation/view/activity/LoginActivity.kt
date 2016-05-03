@@ -9,6 +9,7 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
+import net.numa08.gochisou.data.model.Client
 import net.numa08.gochisou.data.model.LoginProfile
 import net.numa08.gochisou.data.model.NavigationIdentifier
 import net.numa08.gochisou.data.model.PageNation
@@ -70,8 +71,8 @@ class LoginActivity : AppCompatActivity(),
                 ?.commit()
     }
 
-    override fun onClickLogin(fragment: InputTokenFragment, loginProfile: LoginProfile) {
-        loginPresenter.login(loginProfile)
+    override fun onClickLogin(fragment: InputTokenFragment, teamURL: String, client: Client, redirectURL: String) {
+
     }
 
     override fun onLogin(loginProfile: LoginProfile, team: PageNation.TeamPageNation) {

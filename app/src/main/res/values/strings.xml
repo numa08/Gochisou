@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Gochisou</string>
     <string name="login_button">login</string>
-    <string name="hint_token">Token</string>
+    <string name="hint_client_secret">Client Secret</string>
     <string name="button_get_token">Get your token</string>
     <string name="message_invalid_token">ログインできませんでした。\nトークンを再確認してください。</string>
     <string name="button_next">Next</string>
@@ -16,4 +16,6 @@
     <string name="menu_add_team">別のチームにログインする</string>
     <string name="label_post_list">投稿一覧</string>
     <string name="label_member_list">メンバー一覧</string>
+    <string name="hint_client_id">Client ID</string>
+    <string name="hint_redirect_url">Redirect URL</string>
 </resources>

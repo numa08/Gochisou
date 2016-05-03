@@ -32,20 +32,55 @@
         android:layout_above="@id/button_get_token"
         >
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/edit_client_secret_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             >
             <EditText
-                android:id="@+id/edit_token"
+                android:id="@+id/edit_client_secret"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_token"
+                android:hint="@string/hint_client_secret"
                 android:lines="1"
                 android:maxLines="1"
                 android:inputType="text"
                 android:textColorHint="?android:attr/textColorPrimaryInverse"
                 />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/edit_client_id_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/edit_client_secret_wrapper">
+
+            <EditText
+                android:id="@+id/edit_client_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_client_id"
+                android:lines="1"
+                android:maxLines="1"
+                android:inputType="text"
+                android:textColorHint="?android:attr/textColorPrimaryInverse" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/edit_redirect_url_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_client_secret_wrapper">
+
+            <EditText
+                android:id="@+id/edit_redirect_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_redirect_url"
+                android:lines="1"
+                android:maxLines="1"
+                android:inputType="textUri"
+                android:textColorHint="?android:attr/textColorPrimaryInverse" />
         </android.support.design.widget.TextInputLayout>
     </RelativeLayout>
 </RelativeLayout>
