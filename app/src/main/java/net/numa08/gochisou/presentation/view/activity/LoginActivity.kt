@@ -9,16 +9,21 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
+import net.numa08.gochisou.data.model.LoginProfile
 import net.numa08.gochisou.data.model.NavigationIdentifier
+import net.numa08.gochisou.data.model.PageNation
 import net.numa08.gochisou.data.repositories.LoginProfileRepository
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
+import net.numa08.gochisou.presentation.presenter.LoginPresenter
 import net.numa08.gochisou.presentation.view.fragment.InputTeamURLFragment
 import net.numa08.gochisou.presentation.view.fragment.InputTokenFragment
+import org.jetbrains.anko.support.v4.withArguments
 import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity(),
-        InputTeamURLFragment.PresenterProvider,
-        InputTokenFragment.PresenterProvider {
+        InputTeamURLFragment.Callback,
+        InputTokenFragment.Callback,
+        LoginPresenter.Callback {
 
     companion object{
         val BACK_STACK = "${LoginActivity::class.simpleName}.BACK_STACK"
@@ -33,30 +38,14 @@ class LoginActivity : AppCompatActivity(),
         @Inject set
     lateinit var navigationIdentifierRepository: NavigationIdentifierRepository
         @Inject set
-    override val inputTeamURLPresenter by lazy { GochisouApplication.application?.applicationComponent?.activityComponent()?.inputTeamURLPresenter()!! }
-    override val inputTokenPresenter by lazy { GochisouApplication.application?.applicationComponent?.activityComponent()?.inputTokenPresenter()!! }
+    lateinit var loginPresenter: LoginPresenter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GochisouApplication.application?.applicationComponent?.inject(this)
-        inputTeamURLPresenter.fragmentManager = supportFragmentManager
-        inputTokenPresenter.onLoginHandler = { c ,p, r ->
-            Log.d("Gochisou", "on login")
-            profileRepository.add(p)
-            val ts = r?.body()?.list?.map{ it.loginToken = p.token; it }
-            ts?.forEach { navigationIdentifierRepository.add(NavigationIdentifier.PostNavigationIdentifier(it.name ?: "", it.icon ?: "", p)) }
-            Realm.getInstance(realmConfiguration).use { re ->
-                re.executeTransaction { it.copyToRealmOrUpdate(ts) }
-
-            }
-            startActivity(Intent(this, MainActivity::class.java))
-            supportFinishAfterTransition()
-        }
-        inputTokenPresenter.onErrorHandler = {c, e ->
-            Log.e("Gochisou", "Could not login", e)
-            Log.d("Gochisou", "caller header is " + c?.request()?.headers())
-            Log.d("Gochisou", "caller body is " + c?.request()?.body())
-        }
+        loginPresenter = GochisouApplication.application?.applicationComponent?.activityComponent()?.loginPresenter()!!
+        loginPresenter.callback = this
 
         setContentView(R.layout.activity_login)
         supportFragmentManager
@@ -72,15 +61,35 @@ class LoginActivity : AppCompatActivity(),
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        inputTeamURLPresenter.resume()
-        inputTokenPresenter.resume()
+    override fun onClickNext(fragment: InputTeamURLFragment, teamURL: String) {
+        val nextFragment = InputTokenFragment().withArguments(InputTokenFragment.ARG_TEAM_URL to teamURL)
+        supportFragmentManager
+                ?.beginTransaction()
+                ?.replace(R.id.content, nextFragment, LoginActivity.BACK_STACK)
+                ?.addToBackStack(LoginActivity.BACK_STACK)
+                ?.commit()
     }
 
-    override fun onPause() {
-        super.onPause()
-        inputTeamURLPresenter.pause()
-        inputTokenPresenter.pause()
+    override fun onClickLogin(fragment: InputTokenFragment, loginProfile: LoginProfile) {
+        loginPresenter.login(loginProfile)
+    }
+
+    override fun onLogin(loginProfile: LoginProfile, team: PageNation.TeamPageNation) {
+        profileRepository.add(loginProfile)
+        val teams = team
+                .list
+                ?.map { it.loginToken = loginProfile.token; it }
+                ?.map { navigationIdentifierRepository.add(NavigationIdentifier.PostNavigationIdentifier(it.name ?: "", it.icon ?: "", loginProfile)); it }
+
+        Realm.getInstance(realmConfiguration)?.use {
+            it.executeTransaction { it.copyToRealmOrUpdate(teams) }
+        }
+
+        startActivity(Intent(this, MainActivity::class.java))
+        supportFinishAfterTransition()
+    }
+
+    override fun onFailure(throwable: Throwable) {
+        Log.e("Gochisou", "failed login ", throwable)
     }
 }

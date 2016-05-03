@@ -6,45 +6,40 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import com.jakewharton.rxbinding.view.clicks
 import com.jakewharton.rxbinding.widget.textChanges
 import com.trello.rxlifecycle.components.support.RxFragment
+import kotlinx.android.synthetic.main.fragment_input_team_url.*
 import net.numa08.gochisou.R
-import net.numa08.gochisou.data.model.LoginProfile
-import net.numa08.gochisou.presentation.presenter.InputTeamURLPresenter
-import org.jetbrains.anko.find
 
 class InputTeamURLFragment : RxFragment(){
 
-    interface PresenterProvider{
-        val inputTeamURLPresenter: InputTeamURLPresenter
+    interface Callback {
+        fun onClickNext(fragment: InputTeamURLFragment, teamURL: String)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_input_team_url, container, false)
     }
 
-    val teamText by lazy { view!!.find<EditText>(R.id.edit_team_name) }
-    val nextButton by lazy {view!!.find<Button>(R.id.button_next) }
-
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val changeNextButtonAvailability = {nextButton.isEnabled = !TextUtils.isEmpty(teamText.text)}
+        val changeNextButtonAvailability = { button_next.isEnabled = !TextUtils.isEmpty(edit_team_name.text) }
 
         changeNextButtonAvailability()
-        teamText
+        edit_team_name
         .textChanges()
         .compose(bindToLifecycle<CharSequence>())
         .subscribe{changeNextButtonAvailability()}
 
-        nextButton
+        button_next
         .clicks()
         .compose(bindToLifecycle<Unit>())
-        .subscribe{(activity as? PresenterProvider)?.inputTeamURLPresenter?.onClickNext(LoginProfile(teamText.text.toString()))
-                ?: Log.d("Gochisou", "activity should implements PresenterProvider")
-        }
+                .subscribe({
+                    (activity as Callback).onClickNext(this, edit_team_name.text.toString())
+                }, {
+                    Log.e("Gochisou", "thorw error on click next button ", it)
+                })
 
     }
 }
