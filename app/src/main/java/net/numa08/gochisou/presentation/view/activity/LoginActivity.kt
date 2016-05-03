@@ -15,9 +15,11 @@ import net.numa08.gochisou.data.model.NavigationIdentifier
 import net.numa08.gochisou.data.model.PageNation
 import net.numa08.gochisou.data.repositories.LoginProfileRepository
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
+import net.numa08.gochisou.data.service.AuthorizeURLGenerator
 import net.numa08.gochisou.presentation.presenter.LoginPresenter
 import net.numa08.gochisou.presentation.view.fragment.InputTeamURLFragment
 import net.numa08.gochisou.presentation.view.fragment.InputTokenFragment
+import org.jetbrains.anko.browse
 import org.jetbrains.anko.support.v4.withArguments
 import javax.inject.Inject
 
@@ -38,6 +40,8 @@ class LoginActivity : AppCompatActivity(),
     lateinit  var realmConfiguration: RealmConfiguration
         @Inject set
     lateinit var navigationIdentifierRepository: NavigationIdentifierRepository
+        @Inject set
+    lateinit var urlGenerator: AuthorizeURLGenerator
         @Inject set
     lateinit var loginPresenter: LoginPresenter
 
@@ -72,7 +76,8 @@ class LoginActivity : AppCompatActivity(),
     }
 
     override fun onClickLogin(fragment: InputTokenFragment, teamURL: String, client: Client, redirectURL: String) {
-
+        val url = urlGenerator.generateAuthorizeURL(client.id, redirectURL)
+        browse(url)
     }
 
     override fun onLogin(loginProfile: LoginProfile, team: PageNation.TeamPageNation) {
