@@ -13,7 +13,7 @@ import net.numa08.gochisou.presentation.view.fragment.*
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf(ApplicationModule::class, EsaServiceModule::class, RealmConfigurationModule::class, LoginProfileRepositoryModule::class, NavigationIdentifierRepositoryModule::class, TeamRepositoryModule::class, AuthorizeURLGeneratorModule::class))
+@Component(modules = arrayOf(ApplicationModule::class, EsaServiceModule::class, RealmConfigurationModule::class, LoginProfileRepositoryModule::class, NavigationIdentifierRepositoryModule::class, TeamRepositoryModule::class, AuthorizeURLGeneratorModule::class, TempLoginInfoRepositoryModule::class))
 interface ApplicationComponent {
     fun context(): Context
 

@@ -36,3 +36,16 @@ open class TeamRepositoryModule {
     open fun providesTeamRepository(): TeamRepository = TeamRepositoryImpl()
 
 }
+
+@Module
+@Singleton
+class TempLoginInfoRepositoryModule {
+
+    var singleTon: TempLoginInfoRepository? = null
+
+    @Provides
+    @Singleton
+    fun providesTempLoginInfoRepository(sharedPreferences: SharedPreferences): TempLoginInfoRepository
+            = singleTon ?: TempLoginInfoRepositoryImpl(sharedPreferences).apply { singleTon = this }
+
+}
