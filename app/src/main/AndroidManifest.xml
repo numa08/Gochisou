@@ -31,7 +31,19 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/label_login"
             android:theme="@style/AppTheme.LoginActivity"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:launchMode="singleInstance">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="github.com" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".presentation.view.activity.PostDetailActivity"
             android:configChanges="orientation|screenSize"

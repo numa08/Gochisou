@@ -7,14 +7,13 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import net.numa08.gochisou.BuildConfig
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
-import net.numa08.gochisou.data.model.Client
-import net.numa08.gochisou.data.model.LoginProfile
-import net.numa08.gochisou.data.model.NavigationIdentifier
-import net.numa08.gochisou.data.model.PageNation
+import net.numa08.gochisou.data.model.*
 import net.numa08.gochisou.data.repositories.LoginProfileRepository
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
+import net.numa08.gochisou.data.repositories.TempLoginInfoRepository
 import net.numa08.gochisou.data.service.AuthorizeURLGenerator
 import net.numa08.gochisou.presentation.presenter.LoginPresenter
 import net.numa08.gochisou.presentation.view.fragment.InputTeamNameFragment
@@ -33,6 +32,8 @@ class LoginActivity : AppCompatActivity(),
 
         fun intent(ctx: Context): Intent =
             Intent(ctx, LoginActivity::class.java)
+
+        val OAUTH_STATE = BuildConfig.APPLICATION_ID
     }
 
     lateinit var profileRepository: LoginProfileRepository
@@ -42,6 +43,8 @@ class LoginActivity : AppCompatActivity(),
     lateinit var navigationIdentifierRepository: NavigationIdentifierRepository
         @Inject set
     lateinit var urlGenerator: AuthorizeURLGenerator
+        @Inject set
+    lateinit var tempLoginInfoRepository: TempLoginInfoRepository
         @Inject set
     lateinit var loginPresenter: LoginPresenter
 
@@ -57,6 +60,13 @@ class LoginActivity : AppCompatActivity(),
         .beginTransaction()
                 .add(R.id.content, InputTeamNameFragment(), BACK_STACK)
         .commit()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        val uri = intent?.data
+        val tempLoginInfo = uri?.getQueryParameter("state")?.let { tempLoginInfoRepository[it] }
+        val code = uri?.getQueryParameter("code")
     }
 
     override fun onBackPressed() {
@@ -76,7 +86,8 @@ class LoginActivity : AppCompatActivity(),
     }
 
     override fun onClickLogin(fragment: InputTokenFragment, teamName: String, client: Client, redirectURL: String) {
-        val url = urlGenerator.generateAuthorizeURL(client.id, redirectURL)
+        tempLoginInfoRepository[OAUTH_STATE] = TempLoginInfo(teamName, client, redirectURL)
+        val url = urlGenerator.generateAuthorizeURL(client.id, redirectURL, state = OAUTH_STATE)
         browse(url)
     }
 
