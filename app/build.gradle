@@ -24,6 +24,9 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+    dataBinding {
+        enabled = true
+    }
 }
 def retrofitVersion ="2.0.0"
 def daggerVersion = '2.0'

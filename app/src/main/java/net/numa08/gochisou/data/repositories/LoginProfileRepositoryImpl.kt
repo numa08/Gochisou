@@ -1,15 +1,15 @@
 package net.numa08.gochisou.data.repositories
 
 import android.content.SharedPreferences
+import android.databinding.ObservableArrayList
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import net.numa08.gochisou.data.model.LoginProfile
-import java.util.*
 
 class LoginProfileRepositoryImpl(override val sharedPreferences: SharedPreferences, val gson: Gson = GsonBuilder().create())
-: LoginProfileRepository(gson.fromJson(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<LoginProfile>>() {}.type)),
-        SharedPreferencesRepository {
+: LoginProfileRepository(gson.fromJson<ObservableArrayList<LoginProfile>>(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ObservableArrayList<LoginProfile>>() {}.type))
+        , SharedPreferencesRepository {
 
     companion object {
         val PREFERENCE_KEY = "${LoginProfileRepositoryImpl::class.simpleName}.PREFERENCE_KEY"

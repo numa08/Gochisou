@@ -2,6 +2,7 @@ package net.numa08.gochisou.presentation.internal.di.components
 
 import android.content.Context
 import dagger.Component
+import net.numa08.gochisou.data.repositories.LoginProfileRepository
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
 import net.numa08.gochisou.presentation.internal.di.modules.*
 import net.numa08.gochisou.presentation.service.EsaAccessService
@@ -18,6 +19,8 @@ interface ApplicationComponent {
     fun context(): Context
 
     fun navigationIdentifierRepository(): NavigationIdentifierRepository
+
+    fun loginProfileRepository(): LoginProfileRepository
 
     fun inject(activity: MainActivity)
 

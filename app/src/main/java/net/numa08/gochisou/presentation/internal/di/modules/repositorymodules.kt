@@ -23,8 +23,8 @@ class NavigationIdentifierRepositoryModule(val sharedPreferences: SharedPreferen
 
     @Provides
     @Singleton
-    fun providesNavigationIdentifierRepository(): NavigationIdentifierRepository
-            = NavigationIdentifierRepositoryImpl(sharedPreferences)
+    fun providesNavigationIdentifierRepository(loginProfileRepository: LoginProfileRepository): NavigationIdentifierRepository
+            = NavigationIdentifierRepositoryImpl(sharedPreferences, loginProfileRepository = loginProfileRepository)
 }
 
 @Module
