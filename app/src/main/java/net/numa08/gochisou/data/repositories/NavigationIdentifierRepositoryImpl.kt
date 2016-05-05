@@ -11,7 +11,7 @@ import net.numa08.gochisou.data.model.NavigationIdentifier
 import java.util.*
 
 class NavigationIdentifierRepositoryImpl(override val sharedPreferences: SharedPreferences, val gson: Gson = NavigationIdentifierMapper().gson, val loginProfileRepository: LoginProfileRepository) : NavigationIdentifierRepository(
-        gson.fromJson(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ArrayList<NavigationIdentifier>>() {}.type))
+        gson.fromJson(sharedPreferences.getString(PREFERENCE_KEY, "[]"), object : TypeToken<ObservableArrayList<NavigationIdentifier>>() {}.type))
         , SharedPreferences.OnSharedPreferenceChangeListener
         , SharedPreferencesRepository {
     companion object {

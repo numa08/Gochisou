@@ -1,5 +1,8 @@
 package net.numa08.gochisou.presentation.view.adapter
 
+import android.databinding.ObservableArrayList
+import android.databinding.ObservableList
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
@@ -19,6 +22,36 @@ import org.parceler.Parcels
 
 class MainNavigationAdapter(fragmentManager: FragmentManager, val navigationIdentifierRepository: NavigationIdentifierRepository) :
         FragmentStatePagerAdapter(fragmentManager), CustomTabLayout.CustomPagerAdapter {
+
+    val navigationIdentifierRepositoryChangeListener = object : ObservableList.OnListChangedCallback<ObservableArrayList<NavigationIdentifier>>() {
+        override fun onItemRangeInserted(p0: ObservableArrayList<NavigationIdentifier>?, p1: Int, p2: Int) {
+
+        }
+
+        override fun onItemRangeMoved(p0: ObservableArrayList<NavigationIdentifier>?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun onChanged(p0: ObservableArrayList<NavigationIdentifier>?) {
+            Handler().post {
+                this@MainNavigationAdapter.notifyDataSetChanged()
+            }
+        }
+
+        override fun onItemRangeRemoved(p0: ObservableArrayList<NavigationIdentifier>?, p1: Int, p2: Int) {
+        }
+
+        override fun onItemRangeChanged(p0: ObservableArrayList<NavigationIdentifier>?, p1: Int, p2: Int) {
+        }
+    }
+
+    init {
+        navigationIdentifierRepository.addOnListChangedCallback(navigationIdentifierRepositoryChangeListener)
+    }
+
+    @Suppress("unused")
+    fun finalize() {
+        navigationIdentifierRepository.removeOnListChangedCallback(navigationIdentifierRepositoryChangeListener)
+    }
 
     override fun customTabView(position: Int, parent: ViewGroup?): View? {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.row_main_tab, parent, false) as? TextView
