@@ -16,6 +16,7 @@ import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
 import net.numa08.gochisou.data.repositories.TempLoginInfoRepository
 import net.numa08.gochisou.data.service.AuthorizeURLGenerator
 import net.numa08.gochisou.presentation.presenter.LoginPresenter
+import net.numa08.gochisou.presentation.service.EsaAccessService
 import net.numa08.gochisou.presentation.view.fragment.InputTeamNameFragment
 import net.numa08.gochisou.presentation.view.fragment.InputTokenFragment
 import org.jetbrains.anko.browse
@@ -67,6 +68,15 @@ class LoginActivity : AppCompatActivity(),
         val uri = intent?.data
         val tempLoginInfo = uri?.getQueryParameter("state")?.let { tempLoginInfoRepository[it] }
         val code = uri?.getQueryParameter("code")
+        if (tempLoginInfo != null && code != null) {
+            EsaAccessService.getToken(this, tempLoginInfo.teamName, tempLoginInfo.client, tempLoginInfo.redirectURL, code).let {
+                startService(it)
+            }
+            Intent(this, MainActivity::class.java).let {
+                startActivity(it)
+            }
+            supportFinishAfterTransition()
+        }
     }
 
     override fun onBackPressed() {

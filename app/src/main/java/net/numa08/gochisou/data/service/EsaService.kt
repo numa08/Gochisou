@@ -17,6 +17,7 @@ interface EsaService {
     fun members(@Header("Authorization") token: String?, @Path("team_name") teamName: String?): Call<PageNation.MemberPageNation>
 
     @POST("/oauth/token")
+    @FormUrlEncoded
     fun token(@Field("client_id") clientId: String, @Field("client_secret") clientSecret: String, @Field("grant_type") grantType: String = "authorization_code", @Field("redirect_uri") redirectURL: String, @Field("code") code: String): Call<Token>
 
     @GET("/oauth/token/info")

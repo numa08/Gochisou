@@ -7,8 +7,10 @@ import android.util.Log
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import net.numa08.gochisou.GochisouApplication
+import net.numa08.gochisou.data.model.Client
 import net.numa08.gochisou.data.model.LoginProfile
 import net.numa08.gochisou.data.model.Team
+import net.numa08.gochisou.data.repositories.LoginProfileRepository
 import net.numa08.gochisou.data.service.EsaService
 import net.numa08.gochisou.kotlin.Either
 import net.numa08.gochisou.kotlin.tryAllCatch
@@ -23,20 +25,24 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
     companion object {
         val EXTRA_ARG_SERVICE_ACTION = "service_action"
 
-        fun getPosts(context: Context, loginProfile: LoginProfile, query: String? = null): Intent {
-            val i = Intent(context, EsaAccessService::class.java)
-            i.putExtra(EXTRA_ARG_SERVICE_ACTION, Parcels.wrap(ServiceAction.GetPosts(loginProfile, query)))
-            return i
-        }
+        fun getPosts(context: Context, loginProfile: LoginProfile, query: String? = null): Intent =
+                Intent(context, EsaAccessService::class.java).apply {
+                    putExtra(EXTRA_ARG_SERVICE_ACTION, Parcels.wrap(ServiceAction.GetPosts(loginProfile, query)))
+                }
 
-        fun getMembers(context: Context, loginProfile: LoginProfile): Intent {
-            val i = Intent(context, EsaAccessService::class.java)
-            i.putExtra(EXTRA_ARG_SERVICE_ACTION, Parcels.wrap(ServiceAction.GetMembers(loginProfile)))
-            return i
-        }
+        fun getMembers(context: Context, loginProfile: LoginProfile): Intent =
+                Intent(context, EsaAccessService::class.java).apply {
+                    putExtra(EXTRA_ARG_SERVICE_ACTION, Parcels.wrap(ServiceAction.GetMembers(loginProfile)))
+                }
 
+        fun getToken(context: Context, teamName: String, client: Client, redirectURL: String, code: String): Intent =
+                Intent(context, EsaAccessService::class.java).apply {
+                    putExtra(EXTRA_ARG_SERVICE_ACTION, Parcels.wrap(ServiceAction.GetToken(teamName, client, redirectURL, code)))
+                }
     }
 
+    lateinit var loginProfileRepository: LoginProfileRepository
+        @Inject set
     lateinit var realmConfiguration: RealmConfiguration
       @Inject set
 
@@ -54,6 +60,33 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
             is ServiceAction.GetPosts -> getPosts(action.loginProfile, action.query)
             is ServiceAction.GetTeams -> getTeam(action.loginProfile)
             is ServiceAction.GetMembers -> getMember(action.loginProfile)
+            is ServiceAction.GetToken -> getToken(action.teamName, action.client, action.redirectURL, action.code)
+        }
+    }
+
+    fun getToken(teamName: String, client: Client, redirectURL: String, code: String) {
+        val result = tryAllCatch {
+            esaService.token(
+                    clientId = client.id,
+                    clientSecret = client.secret,
+                    redirectURL = redirectURL,
+                    code = code
+            ).execute()
+        }
+        when (result) {
+            is Either.Right -> {
+                result.value?.body()?.let {
+                    val profile = LoginProfile(teamName, client, it)
+                    getTeam(profile)
+                    loginProfileRepository.add(profile)
+                }
+                result.value?.errorBody()?.let {
+                    Log.e("Gochisou", "could not get token", Error(it.string()))
+                }
+            }
+            is Either.Left -> {
+                Log.e("Gochisou", "could not get token ", result.value)
+            }
         }
     }
 
@@ -161,8 +194,10 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
         class GetPosts @ParcelConstructor constructor(@ParcelProperty("loginProfile") val loginProfile: LoginProfile, @ParcelProperty("query") val query: String? = "") : ServiceAction()
         @Parcel(Parcel.Serialization.BEAN)
         class GetTeams @ParcelConstructor constructor(@ParcelProperty("loginProfile") val loginProfile: LoginProfile) : ServiceAction()
-
         @Parcel(Parcel.Serialization.BEAN)
         class GetMembers @ParcelConstructor constructor(@ParcelProperty("loginProfile") val loginProfile: LoginProfile) : ServiceAction()
+
+        @Parcel(Parcel.Serialization.BEAN)
+        class GetToken @ParcelConstructor constructor(@ParcelProperty("teamName") val teamName: String, @ParcelProperty("client") val client: Client, @ParcelProperty("redirectURL") val redirectURL: String, @ParcelProperty("code") val code: String) : ServiceAction()
     }
 }
