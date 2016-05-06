@@ -72,6 +72,7 @@ dependencies {
     compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.8.7@aar') {
         transitive = true
     }
+    compile 'io.realm:android-adapters:1.0.1'
 }
 
 kapt {

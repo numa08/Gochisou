@@ -9,7 +9,7 @@ import io.realm.RealmBaseAdapter
 import io.realm.RealmResults
 import net.numa08.gochisou.data.model.Team
 
-class TeamListAdapter(context: Context, realmResults: RealmResults<Team>?) : RealmBaseAdapter<Team>(context, realmResults, true) {
+class TeamListAdapter(context: Context, realmResults: RealmResults<Team>?) : RealmBaseAdapter<Team>(context, realmResults) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val textView = (convertView as? TextView) ?: LayoutInflater.from(parent.context).inflate(android.R.layout.simple_list_item_1, parent, false) as TextView

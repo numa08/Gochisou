@@ -3,7 +3,7 @@ package io.realm
 import android.support.v7.widget.RecyclerView
 
 abstract class RealmBaseRecyclerAdapter<T : RealmObject, VH : RecyclerView.ViewHolder>(protected var realmResults: RealmResults<T>?, autoRefresh: Boolean) : RecyclerView.Adapter<VH>() {
-    private val listener: RealmChangeListener?
+    private val listener: RealmChangeListener<BaseRealm>?
 
     init {
         this.listener = if (!autoRefresh)
@@ -22,7 +22,7 @@ abstract class RealmBaseRecyclerAdapter<T : RealmObject, VH : RecyclerView.ViewH
             }
 
             if (queryResults != null) {
-                queryResults.realm.addChangeListener(listener)
+                queryResults.realm.addListener(listener)
             }
         }
 

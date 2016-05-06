@@ -12,7 +12,6 @@ import net.numa08.gochisou.data.model.Team
 import net.numa08.gochisou.data.repositories.LoginProfileRepository
 import net.numa08.gochisou.presentation.service.EsaAccessService
 import net.numa08.gochisou.presentation.view.adapter.TeamListAdapter
-import org.jetbrains.anko.support.v4.startService
 import org.parceler.Parcels
 import javax.inject.Inject
 
@@ -33,7 +32,7 @@ class TeamListFragment : ListFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val teams = realm?.allObjects(Team::class.java)
+        val teams = realm?.where(Team::class.java)?.findAll()
         val adapter = TeamListAdapter(view!!.context, teams)
         listAdapter = adapter
     }
