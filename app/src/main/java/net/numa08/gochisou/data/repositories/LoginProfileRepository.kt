@@ -7,4 +7,12 @@ abstract class LoginProfileRepository(val list: ObservableList<LoginProfile>) : 
 
     fun find(token: String): LoginProfile? = list.find { it.token.accessToken == token }
 
+    fun updateOrSet(element: LoginProfile) {
+        val idx = indexOf(find(element.token.accessToken))
+        val f = when(idx) {
+            -1 -> {i: Int,e: LoginProfile -> add(e) }
+            else -> {i: Int, e: LoginProfile -> set(i,e)}
+        }
+        f(idx, element)
+    }
 }

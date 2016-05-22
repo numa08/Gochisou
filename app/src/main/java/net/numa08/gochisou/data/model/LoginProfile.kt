@@ -7,12 +7,13 @@ import org.parceler.ParcelProperty
 @Parcel(Parcel.Serialization.BEAN)
 data class LoginProfile
 @ParcelConstructor
-constructor(@ParcelProperty("teamName")
-            val teamName: String,
-            @ParcelProperty("client")
-            val client: Client,
-            @ParcelProperty("token")
-            val token: Token) {
+constructor(
+        @ParcelProperty("client")
+        val client: Client,
+        @ParcelProperty("token")
+        val token: Token,
+        @ParcelProperty("team")
+        val team: Team) {
 
     val tokenForHeader : String
         get() = "Bearer ${token.accessToken}"

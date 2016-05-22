@@ -1,5 +1,6 @@
 package net.numa08.gochisou.data.model
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
@@ -11,5 +12,7 @@ open class Member(
         var name: String? = null,
         var icon: String? = null,
         @Suppress("unused")
-        var email: String? = null
+        var email: String? = null,
+        @Expose
+        var teamName: String = ""
 ) : RealmObject()

@@ -8,14 +8,12 @@ import com.squareup.picasso.Picasso
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.RealmResults
-import io.realm.Sort
 import kotlinx.android.synthetic.main.fragment_post_list.*
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
 import net.numa08.gochisou.data.model.NavigationIdentifier
 import net.numa08.gochisou.data.model.Post
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
-import net.numa08.gochisou.data.repositories.TeamRepository
 import net.numa08.gochisou.presentation.presenter.PostListPresenter
 import net.numa08.gochisou.presentation.service.EsaAccessService
 import net.numa08.gochisou.presentation.view.adapter.PostListAdapter
@@ -26,19 +24,17 @@ class PostListFragment : Fragment(), ArgLoginProfile, NavigationAddable {
 
     lateinit var realmConfiguration: RealmConfiguration
         @Inject set
-    lateinit var teamRepository: TeamRepository
-        @Inject set
     lateinit override var navigationIdentifierRepository: NavigationIdentifierRepository
         @Inject set
 
 
     lateinit var listAdapter : PostListAdapter
     val realm by lazy { Realm.getInstance(realmConfiguration) }
-    val team by lazy { teamRepository.findByLoginProfile(realm, loginProfile())!! }
+    val team by lazy { loginProfile().team }
 
     override val navigationIdentifier: NavigationIdentifier
             by lazy {
-                NavigationIdentifier.PostNavigationIdentifier(team.name!!, team.icon!!, loginProfile())
+                NavigationIdentifier.PostNavigationIdentifier(team.name, team.icon, loginProfile())
             }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,9 +90,13 @@ class PostListFragment : Fragment(), ArgLoginProfile, NavigationAddable {
                 ?: Log.d("Gochisou", "on click post at $view 's ${post.fullName}")
     }
 
-    fun loadPosts(): RealmResults<Post>? {
-        return team.posts?.where()?.findAllSorted("updatedAt", Sort.DESCENDING)
-    }
+    fun loadPosts(): RealmResults<Post>? =
+            realm
+            .where(Post::class.java)
+            ?.equalTo("teamName", loginProfile()
+                    .team
+                    .name)
+            ?.findAll()
 
     interface PresenterProvider {
         val postListPresenter: PostListPresenter

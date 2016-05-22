@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.navigation_header.view.*
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
 import net.numa08.gochisou.data.model.Post
-import net.numa08.gochisou.data.model.Team
 import net.numa08.gochisou.data.repositories.LoginProfileRepository
 import net.numa08.gochisou.presentation.view.PostListView
 import net.numa08.gochisou.presentation.view.fragment.MainNavigationFragment
@@ -63,12 +62,9 @@ class MainActivity : AppCompatActivity(),
             drawerToggle.syncState()
 
             loginProfileRepository.first().let { p ->
-                val team : Team? = realm.where(Team::class.java)
-                        .equalTo("loginToken", p.token.accessToken)
-                    .findFirst()
                 val header = navigation_view.getHeaderView(0)?.navigation_header
-                if (header != null && team != null) {
-                    header.team = team
+                if (header != null) {
+                    header.team = p.team
                     header.listener = object : NavigationHeader.ActionListener {
                         override fun onClickPostList(header: NavigationHeader?) {
                             startActivity(intentFor<PostListActivity>(IntentLoginProfile.ARG_LOGIN_PROFILE to Parcels.wrap(p)))

@@ -29,6 +29,6 @@ class GochisouApplication : Application() {
     companion object {
 
         var application: GochisouApplication? = null
-
+        val LOG_TAG = "Gochisou"
     }
 }

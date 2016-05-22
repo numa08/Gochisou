@@ -5,6 +5,7 @@ import dagger.Provides
 import net.numa08.gochisou.data.entity.mapper.PostEntitiesMapper
 import net.numa08.gochisou.data.service.EsaService
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
@@ -16,7 +17,11 @@ class EsaServiceModule {
     @Singleton
     fun providesEsaService(): EsaService {
         val gson = PostEntitiesMapper().gson
-        return Retrofit.Builder().baseUrl(END_POINT).addConverterFactory(GsonConverterFactory.create(gson)).build().create(EsaService::class.java)
+        return Retrofit.Builder().baseUrl(END_POINT)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build()
+                .create(EsaService::class.java)
     }
 
     companion object {

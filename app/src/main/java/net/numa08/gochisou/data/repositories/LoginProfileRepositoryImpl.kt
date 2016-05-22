@@ -24,6 +24,10 @@ class LoginProfileRepositoryImpl(override val sharedPreferences: SharedPreferenc
 
     override fun addAll(index: Int, elements: Collection<LoginProfile>): Boolean = super.addAll(index, elements).apply { write() }
 
+    override fun set(index: Int, element: LoginProfile?): LoginProfile? {
+        return super.set(index, element).apply { write() }
+    }
+
     override fun clear() {
         super.clear()
         write()

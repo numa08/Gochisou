@@ -5,18 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import io.realm.Realm
-import io.realm.RealmConfiguration
 import net.numa08.gochisou.BuildConfig
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
-import net.numa08.gochisou.data.model.*
+import net.numa08.gochisou.data.model.Client
+import net.numa08.gochisou.data.model.LoginProfile
+import net.numa08.gochisou.data.model.PageNation
+import net.numa08.gochisou.data.model.TempLoginInfo
 import net.numa08.gochisou.data.repositories.LoginProfileRepository
 import net.numa08.gochisou.data.repositories.NavigationIdentifierRepository
 import net.numa08.gochisou.data.repositories.TempLoginInfoRepository
 import net.numa08.gochisou.data.service.AuthorizeURLGenerator
 import net.numa08.gochisou.presentation.presenter.LoginPresenter
-import net.numa08.gochisou.presentation.service.EsaAccessService
 import net.numa08.gochisou.presentation.view.fragment.InputTeamNameFragment
 import net.numa08.gochisou.presentation.view.fragment.InputTokenFragment
 import org.jetbrains.anko.browse
@@ -38,8 +38,6 @@ class LoginActivity : AppCompatActivity(),
     }
 
     lateinit var profileRepository: LoginProfileRepository
-        @Inject set
-    lateinit  var realmConfiguration: RealmConfiguration
         @Inject set
     lateinit var navigationIdentifierRepository: NavigationIdentifierRepository
         @Inject set
@@ -69,13 +67,7 @@ class LoginActivity : AppCompatActivity(),
         val tempLoginInfo = uri?.getQueryParameter("state")?.let { tempLoginInfoRepository[it] }
         val code = uri?.getQueryParameter("code")
         if (tempLoginInfo != null && code != null) {
-            EsaAccessService.getToken(this, tempLoginInfo.teamName, tempLoginInfo.client, tempLoginInfo.redirectURL, code).let {
-                startService(it)
-            }
-            Intent(this, MainActivity::class.java).let {
-                startActivity(it)
-            }
-            supportFinishAfterTransition()
+            loginPresenter.login(tempLoginInfo.teamName, tempLoginInfo.client, tempLoginInfo.redirectURL, code)
         }
     }
 
@@ -103,14 +95,6 @@ class LoginActivity : AppCompatActivity(),
 
     override fun onLogin(loginProfile: LoginProfile, team: PageNation.TeamPageNation) {
         profileRepository.add(loginProfile)
-        val teams = team
-                .list
-                ?.map { it.loginToken = loginProfile.token.accessToken; it }
-                ?.map { navigationIdentifierRepository.add(NavigationIdentifier.PostNavigationIdentifier(it.name ?: "", it.icon ?: "", loginProfile)); it }
-
-        Realm.getInstance(realmConfiguration)?.use {
-            it.executeTransaction { it.copyToRealmOrUpdate(teams) }
-        }
 
         startActivity(Intent(this, MainActivity::class.java))
         supportFinishAfterTransition()

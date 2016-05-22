@@ -1,5 +1,6 @@
 package net.numa08.gochisou.presentation.presenter
 
+import net.numa08.gochisou.data.model.Client
 import net.numa08.gochisou.data.model.LoginProfile
 import net.numa08.gochisou.data.model.PageNation
 
@@ -12,6 +13,6 @@ interface LoginPresenter {
 
     var callback: Callback?
 
-    fun login(profile: LoginProfile)
+    fun login(teamName: String, client: Client, redirectURL: String, code: String)
 
 }

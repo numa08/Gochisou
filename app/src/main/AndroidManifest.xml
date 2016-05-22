@@ -41,7 +41,8 @@
 
                 <data
                     android:scheme="https"
-                    android:host="github.com" />
+                    android:host="github.com"
+                    android:path="/numa08/gochisou"/>
             </intent-filter>
         </activity>
         <activity

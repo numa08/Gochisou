@@ -29,16 +29,6 @@ class NavigationIdentifierRepositoryModule(val sharedPreferences: SharedPreferen
 
 @Module
 @Singleton
-open class TeamRepositoryModule {
-
-    @Provides
-    @Singleton
-    open fun providesTeamRepository(): TeamRepository = TeamRepositoryImpl()
-
-}
-
-@Module
-@Singleton
 class TempLoginInfoRepositoryModule {
 
     var singleTon: TempLoginInfoRepository? = null

@@ -1,21 +1,21 @@
 package net.numa08.gochisou.data.model
 
-import com.google.gson.annotations.Expose
-import io.realm.RealmList
-import io.realm.RealmObject
-import io.realm.annotations.PrimaryKey
+import org.parceler.Parcel
+import org.parceler.ParcelConstructor
+import org.parceler.ParcelProperty
 
-open class Team(
-        @PrimaryKey
-        var name: String? = null,
-        var privacy: String? = null,
-        var description: String? = null,
-        var icon: String? = null,
-        var url: String? = null,
-        @Expose
-        var loginToken: String? = null,
-        @Expose
-        var posts: RealmList<Post>? = null,
-        @Expose
-        var members: RealmList<Member>? = null
-) : RealmObject()
+@Parcel(Parcel.Serialization.BEAN)
+data class Team
+@ParcelConstructor
+constructor(
+        @ParcelProperty("name")
+        val name: String,
+        @ParcelProperty("privacy")
+        val privacy: String,
+        @ParcelProperty("description")
+        val description: String,
+        @ParcelProperty("icon")
+        val icon: String,
+        @ParcelProperty("url")
+        val url: String
+)

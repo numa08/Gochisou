@@ -8,7 +8,6 @@ import android.view.View
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import net.numa08.gochisou.GochisouApplication
-import net.numa08.gochisou.data.model.Team
 import net.numa08.gochisou.data.repositories.LoginProfileRepository
 import net.numa08.gochisou.presentation.service.EsaAccessService
 import net.numa08.gochisou.presentation.view.adapter.TeamListAdapter
@@ -32,7 +31,7 @@ class TeamListFragment : ListFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val teams = realm?.where(Team::class.java)?.findAll()
+        val teams = loginProfileRepository.map { it.team }
         val adapter = TeamListAdapter(view!!.context, teams)
         listAdapter = adapter
     }

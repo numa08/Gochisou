@@ -20,4 +20,8 @@ constructor(
         @ParcelProperty("createdAt")
         @SerializedName("created_at")
         val createdAt: Long
-)
+) {
+        val tokenForHeader : String
+                get() = "Bearer $accessToken"
+
+}

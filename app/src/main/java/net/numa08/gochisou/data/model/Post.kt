@@ -1,5 +1,6 @@
 package net.numa08.gochisou.data.model
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import io.realm.RealmList
 import io.realm.RealmObject
@@ -35,5 +36,7 @@ open class Post(
         @SerializedName("star")
         var isStar: Boolean = false,
         @SerializedName("watch")
-        var isWatch: Boolean = false
+        var isWatch: Boolean = false,
+        @Expose
+        var teamName: String = ""
 ) : RealmObject() {}

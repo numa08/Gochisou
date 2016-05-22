@@ -9,15 +9,13 @@ import io.realm.RealmConfiguration
 import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.data.model.Client
 import net.numa08.gochisou.data.model.LoginProfile
-import net.numa08.gochisou.data.model.Team
 import net.numa08.gochisou.data.repositories.LoginProfileRepository
 import net.numa08.gochisou.data.service.EsaService
-import net.numa08.gochisou.kotlin.Either
-import net.numa08.gochisou.kotlin.tryAllCatch
 import org.parceler.Parcel
 import org.parceler.ParcelConstructor
 import org.parceler.ParcelProperty
 import org.parceler.Parcels
+import rx.schedulers.Schedulers
 import javax.inject.Inject
 
 class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
@@ -35,10 +33,6 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
                     putExtra(EXTRA_ARG_SERVICE_ACTION, Parcels.wrap(ServiceAction.GetMembers(loginProfile)))
                 }
 
-        fun getToken(context: Context, teamName: String, client: Client, redirectURL: String, code: String): Intent =
-                Intent(context, EsaAccessService::class.java).apply {
-                    putExtra(EXTRA_ARG_SERVICE_ACTION, Parcels.wrap(ServiceAction.GetToken(teamName, client, redirectURL, code)))
-                }
     }
 
     lateinit var loginProfileRepository: LoginProfileRepository
@@ -60,133 +54,69 @@ class EsaAccessService : IntentService(EsaAccessService::class.java.name) {
             is ServiceAction.GetPosts -> getPosts(action.loginProfile, action.query)
             is ServiceAction.GetTeams -> getTeam(action.loginProfile)
             is ServiceAction.GetMembers -> getMember(action.loginProfile)
-            is ServiceAction.GetToken -> getToken(action.teamName, action.client, action.redirectURL, action.code)
+            is ServiceAction.GetToken -> getToken(action.client, action.redirectURL, action.code)
         }
     }
 
-    fun getToken(teamName: String, client: Client, redirectURL: String, code: String) {
-        val result = tryAllCatch {
-            esaService.token(
-                    clientId = client.id,
-                    clientSecret = client.secret,
-                    redirectURL = redirectURL,
-                    code = code
-            ).execute()
+    fun getToken(client: Client, redirectURL: String, code: String) {
+        esaService.token(
+                clientId = client.id,
+                clientSecret = client.secret,
+                redirectURL = redirectURL,
+                code = code)
+        .subscribeOn(Schedulers.io())
+        .flatMap { t ->
+            esaService.teams(t.tokenForHeader).subscribeOn(Schedulers.io())
+            .map { t to it }
         }
-        when (result) {
-            is Either.Right -> {
-                result.value?.body()?.let {
-                    val profile = LoginProfile(teamName, client, it)
-                    getTeam(profile)
-                    loginProfileRepository.add(profile)
-                }
-                result.value?.errorBody()?.let {
-                    Log.e("Gochisou", "could not get token", Error(it.string()))
-                }
-            }
-            is Either.Left -> {
-                Log.e("Gochisou", "could not get token ", result.value)
-            }
-        }
+        .map { LoginProfile(client = client, token = it.first, team = it.second.list!![0]) }
+        .subscribe(
+                {loginProfileRepository.add(it)},
+                {Log.e(GochisouApplication.LOG_TAG, "get token error", it)})
     }
 
     fun getPosts(loginProfile: LoginProfile, query: String? = null) {
-        Realm.getInstance(realmConfiguration)
-                .use { realm ->
-                    val t: Team? = realm.where(Team::class.java)
-                            .equalTo("loginToken", loginProfile.token.accessToken)
-                            .findFirst()
-                    if(t != null) {
-                        val res = tryAllCatch {
-                            esaService
-                                    .posts(loginProfile.tokenForHeader, t.name, query)
-                            .execute()
-                        }
-                        val right = res as? Either.Right
-                        val left = res as? Either.Left
-                        right?.value?.body()?.list?.let { l ->
-                            realm.executeTransaction {
-                                val ul = it.copyToRealmOrUpdate(l)
-                                ul.forEach {
-                                    if (!(t.posts?.contains(it) ?: false)) {
-                                        t.posts?.add(it)
-                                    }
-                                }
-                            }
-                        }
-                        right?.value?.errorBody()?.let { e ->
-                            Log.e("Gochisou", "get http error body $e")
-                        }
-                        left?.value?.let {
-                            Log.e("Gochisou", "Failed request ", it)
-                        }
-                    } else {
-                        getTeam(loginProfile)
-                        getPosts(loginProfile)
-                    }
-                }
+        esaService
+        .posts(
+                token = loginProfile.tokenForHeader,
+                teamName = loginProfile.team.name,
+                query = query)
+        .map { it.list?.map { it.teamName = loginProfile.team.name; it }}
+        .subscribe(
+                { l ->
+                    Realm.getInstance(realmConfiguration).use { r ->
+                    r.executeTransaction { it.copyToRealmOrUpdate(l) }
+                }},
+                {Log.e(GochisouApplication.LOG_TAG, "get posts error", it)})
+
     }
 
 
 
     fun getTeam(loginProfile: LoginProfile) {
-        val result = tryAllCatch {
-            esaService
-            .teams(loginProfile.tokenForHeader)
-            .execute()
-        }
-        when(result) {
-            is Either.Right -> {
-                if(result.value.body() != null) {
-                    val list = result.value.body().list?.map { it.loginToken = loginProfile.token.accessToken; it }
-                    Realm.getInstance(realmConfiguration).use { re ->
-                        re.executeTransaction { it.copyToRealmOrUpdate(list) }
-                    }
-                }
-                if(result.value.errorBody() != null) {
-                    Log.e("Gochisou", "Failed to get teams ${result.value.errorBody().string()}")
-                }
-            }
-            is Either.Left -> {
-                Log.e("Gochisou", "Failed to get teams, because", result.value)
-            }
-        }
+        esaService
+        .teams(loginProfile.tokenForHeader)
+        .subscribeOn(Schedulers.io())
+        .map { loginProfile.copy(team = it.list!![0]) }
+        .subscribe(
+                {loginProfileRepository.updateOrSet(it)} ,
+                {Log.e(GochisouApplication.LOG_TAG, "get team error", it)})
     }
 
     fun getMember(loginProfile: LoginProfile) {
-        Realm.getInstance(realmConfiguration).use { realm ->
-            val t: Team? = realm.where(Team::class.java)
-                    .equalTo("loginToken", loginProfile.token.accessToken)
-                    .findFirst()
-            if (t != null) {
-                val res = tryAllCatch {
-                    esaService
-                            .members(loginProfile.tokenForHeader, t.name)
-                            .execute()
-                }
-                val right = res as? Either.Right
-                val left = res as? Either.Left
-                right?.value?.body()?.list?.let { l ->
-                    realm.executeTransaction {
-                        val ul = it.copyToRealmOrUpdate(l)
-                        ul.forEach {
-                            if (!(t.members?.contains(it) ?: false)) {
-                                t.members?.add(it)
-                            }
-                        }
+        esaService
+        .members(
+                token = loginProfile.tokenForHeader,
+                teamName = loginProfile.team.name)
+        .subscribeOn(Schedulers.io())
+        .map { it.list?.map { it.teamName = loginProfile.team.name; it } }
+        .subscribe(
+                {l ->
+                    Realm.getInstance(realmConfiguration).use { r ->
+                        r.executeTransaction { it.copyToRealmOrUpdate(l) }
                     }
-                }
-                right?.value?.errorBody()?.let { e ->
-                    Log.e("Gochisou", "get http error body $e")
-                }
-                left?.value?.let {
-                    Log.e("Gochisou", "Failed request ", it)
-                }
-            } else {
-                getTeam(loginProfile)
-                getMember(loginProfile)
-            }
-        }
+                },
+                {Log.e(GochisouApplication.LOG_TAG, "get member err", it)})
     }
 
     sealed class ServiceAction(){

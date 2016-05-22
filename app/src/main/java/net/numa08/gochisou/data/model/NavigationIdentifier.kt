@@ -37,6 +37,12 @@ sealed class NavigationIdentifier(val name: String, val avatar: String, val logi
             result += 31 * result + fullName.hashCode()
             return result
         }
+
+        override fun toString(): String{
+            return "PostDetailNavigationIdentifier(fullName='$fullName')"
+        }
+
+
     }
 
     override fun equals(other: Any?): Boolean {
@@ -59,5 +65,8 @@ sealed class NavigationIdentifier(val name: String, val avatar: String, val logi
         return result
     }
 
+    override fun toString(): String{
+        return "NavigationIdentifier(name='$name', avatar='$avatar', loginProfile=$loginProfile)"
+    }
 
 }

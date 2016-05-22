@@ -49,8 +49,10 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     compile "com.squareup.retrofit2:retrofit-mock:$retrofitVersion"
+    compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
+    compile 'io.reactivex:rxjava-joins:0.22.0'
     compile 'io.reactivex:rxkotlin:0.40.1'
     compile "com.jakewharton.rxbinding:rxbinding:$rxBindingVersion"
     compile "com.jakewharton.rxbinding:rxbinding-kotlin:$rxBindingVersion"

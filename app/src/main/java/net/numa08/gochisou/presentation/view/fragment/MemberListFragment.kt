@@ -14,7 +14,6 @@ import net.numa08.gochisou.GochisouApplication
 import net.numa08.gochisou.R
 import net.numa08.gochisou.data.model.LoginProfile
 import net.numa08.gochisou.data.model.Member
-import net.numa08.gochisou.data.model.Team
 import net.numa08.gochisou.presentation.service.EsaAccessService
 import net.numa08.gochisou.presentation.view.adapter.MemberListAdapter
 import net.numa08.gochisou.presentation.widget.DividerItemDecoration
@@ -61,12 +60,11 @@ class MemberListFragment : Fragment() {
         realm.close()
     }
 
-    fun loadMembers(): RealmResults<Member>? {
-        val team: Team? = realm.where(Team::class.java)
-                .equalTo("loginToken", loginProfile.token.accessToken)
-                .findFirst()
-        return team?.members?.where()?.findAll()
-    }
+    fun loadMembers(): RealmResults<Member>? =
+        realm.where(Member::class.java)
+            .equalTo("teamName", loginProfile.team.name)
+            .findAll()
+
 
     interface Callback {
         fun onClickMember(member: Member?)

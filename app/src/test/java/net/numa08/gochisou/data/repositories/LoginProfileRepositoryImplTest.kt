@@ -4,6 +4,7 @@ import android.os.Build
 import net.numa08.gochisou.BuildConfig
 import net.numa08.gochisou.data.model.Client
 import net.numa08.gochisou.data.model.LoginProfile
+import net.numa08.gochisou.data.model.Team
 import net.numa08.gochisou.data.model.Token
 import net.numa08.gochisou.testtools.RoboSharedPreferencesRule
 import org.junit.Before
@@ -34,14 +35,14 @@ class LoginProfileRepositoryImplTest {
 
     @Test
     fun addRepository() {
-        val profile = LoginProfile("teamName", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
+        val profile = LoginProfile(Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L), Team("team", "privacy", "description", "icon", "url"))
         repository.add(profile)
         assert(repository[0] == profile)
     }
 
     @Test
     fun restoreFromSharedPreferences() {
-        val profile = LoginProfile("teamName", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
+        val profile = LoginProfile(Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L), Team("team", "privacy", "description", "icon", "url"))
         repository.add(profile)
         val newRepository = LoginProfileRepositoryImpl(repository.sharedPreferences)
         assert(newRepository[0] == profile)
@@ -49,7 +50,7 @@ class LoginProfileRepositoryImplTest {
 
     @Test
     fun findLoginProfileI() {
-        val profile = LoginProfile("teamName", Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L))
+        val profile = LoginProfile(Client("id", "secret"), Token("accessToken", "tokenType", "scope", 0L), Team("team", "privacy", "description", "icon", "url"))
         repository.add(profile)
         val found = repository.find("accessToken")
         assert(found!! == profile)

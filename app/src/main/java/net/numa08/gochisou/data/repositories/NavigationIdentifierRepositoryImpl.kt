@@ -37,7 +37,7 @@ class NavigationIdentifierRepositoryImpl(override val sharedPreferences: SharedP
                 val loginProfile = repository!![p1 + i]
                 this@NavigationIdentifierRepositoryImpl.add(
                         NavigationIdentifier.PostNavigationIdentifier(
-                                name = loginProfile.teamName,
+                                name = loginProfile.team.name,
                                 avatar = "",
                                 loginProfile = loginProfile
                         )
